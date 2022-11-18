@@ -1,2 +1,18 @@
 server:
   port: 8081
+
+#spring:
+#  datasource:
+#    username: root
+#    password: 1234
+#    url: jdbc:mysql://localhost:3306/wenkebbsplusdb?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+#    driver-class-name: com.mysql.jdbc.Driver
+#    type: com.alibaba.druid.pool.DruidDataSource
+
+mybatis:
+  mapper-locations: mapping/*.xml
+
+logging:
+  level:
+    com.polang.wenkebbsplus.mapper: debug
+
