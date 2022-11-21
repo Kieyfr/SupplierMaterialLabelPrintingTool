@@ -22,7 +22,9 @@ public class LoginWebMvcConfigurer implements WebMvcConfigurer {
         // excludePathPatterns 用户排除拦截
 
         registry.addInterceptor(loginHandlerInterceptor)
-                .addPathPatterns("/**");
+                .addPathPatterns("/**")
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/getSuppName");
     }
 
     @Override
