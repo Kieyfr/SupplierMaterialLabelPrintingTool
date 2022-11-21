@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xydz.suppliermateriallabelprintingtool.mapper.SuppUserMapper">
+    <select id="selSuppName" resultType="String">
+        select distinct SUPPNAME from ncc.view_xinya_po_order@DBLIK_PURCHASE where SUPPCODE = #{suppCode}
+    </select>
+    <select id="selSupp" resultType="com.xydz.suppliermateriallabelprintingtool.entity.SuppUser">
+        select * from LPC_SUPPLIER where SUPPCODE = #{suppCode}
+    </select>
+    <insert id="insertSuppUser">
+        insert into LPC_SUPPLIER values (#{SUPPCODE},#{SUPPNAME},#{SUPPPWD})
+    </insert>
+</mapper>
