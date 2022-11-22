@@ -45,7 +45,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         if (token == null){
             throw new NoteException("请重新登录",10002);
         }
-        //开始验证token
+        //验证token
         if (!JwtUtil.verify(token)){
             throw new NoteException("请重新登录",10002);
         }
