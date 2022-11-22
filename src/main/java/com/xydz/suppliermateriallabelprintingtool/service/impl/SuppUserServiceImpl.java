@@ -14,8 +14,8 @@ public class SuppUserServiceImpl implements SuppUserService {
     private SuppUserMapper userMapper;
 
     @Override
-    public String selSuppName(String suppCode ){
-        return userMapper.selSuppName(suppCode);
+    public SuppUser selSuppUser(String suppCode ){
+        return userMapper.selSuppUser(suppCode);
     }
 
     @Override

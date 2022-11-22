@@ -11,7 +11,11 @@ import lombok.Data;
 
 @Data
 public class SuppUser {
-    private String SUPPCODE;
-    private String SUPPNAME;
-    private String SUPPPWD;
+    private String CODE;    //供应商代码
+
+    private String NAME;    //供应商全称
+
+    private String SHORTNAME;    //供应商简称
+
+    private String PWD;     //供应商密码
 }

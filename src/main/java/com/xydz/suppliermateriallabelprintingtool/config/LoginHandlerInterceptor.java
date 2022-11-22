@@ -50,7 +50,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
             throw new NoteException("请重新登录",10002);
         }
         SuppUser suppUser = suppUserService.selSupp(JwtUtil.getSuppCode(token));
-        System.out.println("登录用户："+suppUser.getSUPPNAME());
+        System.out.println("登录用户："+suppUser.getSHORTNAME());
         if (suppUser==null) {
             throw new NoteException("请重新登录",10002);
         }

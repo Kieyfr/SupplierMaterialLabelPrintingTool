@@ -40,8 +40,9 @@ public class JwtUtil {
             header.put("alg","HS256");
             return JWT.create()
                     .withHeader(header)
-                    .withClaim("SUPPCODE",suppUser.getSUPPNAME())
-                    .withClaim("SUPPNAME",suppUser.getSUPPNAME())
+                    .withClaim("CODE",suppUser.getCODE())
+                    .withClaim("NAME",suppUser.getNAME())
+                    .withClaim("SHORTNAME",suppUser.getSHORTNAME())
 //                    .withExpiresAt(date)
                     .withIssuedAt(new Date())
                     .sign(algorithm);
@@ -73,7 +74,7 @@ public class JwtUtil {
      */
     public static String getSuppCode(String token){
         DecodedJWT jwt = JWT.decode(token);
-        return jwt.getClaim("SUPPCODE").asString();
+        return jwt.getClaim("CODE").asString();
     }
 
 }

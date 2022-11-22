@@ -28,19 +28,16 @@ public class LoginController {
      * @return suppName
     */
     @RequestMapping("getSuppName")
-    public ResponseData<String> getSuppName(@RequestParam("suppCode")String suppCode){
-        String suppName = suppUserService.selSuppName(suppCode);
-        if (suppName!=null){
+    public ResponseData<SuppUser> getSuppName(@RequestParam("suppCode")String suppCode){
+        SuppUser suppUser = suppUserService.selSuppUser(suppCode);
+        if (suppUser!=null){
             if (suppUserService.selSupp(suppCode)==null){
-                SuppUser suppUser = new SuppUser();
-                suppUser.setSUPPCODE(suppCode);
-                suppUser.setSUPPNAME(suppName);
-                suppUser.setSUPPPWD(Md5Util.getMD5String("123456"));
+                suppUser.setPWD(Md5Util.getMD5String("123456"));
                 suppUserService.insertSuppUser(suppUser);
             }
-            return new ResponseData<String>("200","获取成功",suppName);
+            return new ResponseData<SuppUser>("200","获取成功",suppUser);
         }
-        return new ResponseData<String>("404","供应商代码不存在",null);
+        return new ResponseData<SuppUser>("404","供应商代码不存在",null);
     }
 
     /**
@@ -55,7 +52,7 @@ public class LoginController {
                                       @RequestParam("password")String password){
         SuppUser suppUser = suppUserService.selSupp(suppCode);
         if (suppUser!=null){
-            if (suppUser.getSUPPPWD().equals(Md5Util.getMD5String(password))){
+            if (suppUser.getPWD().equals(Md5Util.getMD5String(password))){
                 String token = JwtUtil.sign(suppUser);
                 return new ResponseData<String>("200","登录成功",token);
             }

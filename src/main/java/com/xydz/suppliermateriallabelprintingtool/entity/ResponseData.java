@@ -14,10 +14,10 @@ import lombok.Data;
 @AllArgsConstructor
 public class ResponseData<T> {
 
-    private String state;
+    private String state;   //状态码
 
-    private String msg;
+    private String msg;     //消息
 
-    private T data;
+    private T data;         //数据
 
 }
