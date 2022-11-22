@@ -9,6 +9,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+/**
+ * @Author xiachenchen
+ * @ClassName: LoginController
+ * @Description: 登录页面接口 TODO
+ * @Date 2022/11/22
+*/
+
 @RestController
 public class LoginController {
 

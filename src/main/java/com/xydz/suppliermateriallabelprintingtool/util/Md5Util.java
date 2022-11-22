@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * @Author xiachenchen
  * @ClassName: Md5Util
- * @Description: TODO
+ * @Description: 密码加密工具类 TODO
  * @Date 2022/11/21
 */
 

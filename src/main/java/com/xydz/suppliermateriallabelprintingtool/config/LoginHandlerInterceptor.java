@@ -13,6 +13,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @Author xiachenchen
+ * @ClassName: LoginHandlerInterceptor
+ * @Description: 拦截器 TODO
+ * @Date 2022/11/22
+*/
+
 @Component
 public class LoginHandlerInterceptor implements HandlerInterceptor {
 

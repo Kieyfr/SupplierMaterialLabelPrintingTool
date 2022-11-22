@@ -1,8 +1,11 @@
 package com.xydz.suppliermateriallabelprintingtool.config;
 
 /**
- * 自定义异常
- */
+ * @Author xiachenchen
+ * @ClassName: NoteException
+ * @Description: 自定义异常 TODO
+ * @Date 2022/11/22
+*/
 public class NoteException extends RuntimeException {
 
 

@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @Author xiachenchen
  * @ClassName: JwtUtil
- * @Description: TODO
+ * @Description: token工具类 TODO
  * @Date 2022/9/13 10:26
  */
 public class JwtUtil {

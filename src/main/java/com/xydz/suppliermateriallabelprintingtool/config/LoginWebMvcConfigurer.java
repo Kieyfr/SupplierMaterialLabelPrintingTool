@@ -9,6 +9,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 
+/**
+ * @Author xiachenchen
+ * @ClassName: LoginWebMvcConfigurer
+ * @Description: 拦截器配置 TODO
+ * @Date 2022/11/22
+*/
+
 @Component
 @Configuration
 public class LoginWebMvcConfigurer implements WebMvcConfigurer {
@@ -40,8 +47,8 @@ public class LoginWebMvcConfigurer implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-//        registry.addResourceHandler("/wenkebbs/image/**")   // /wenkebbs/image/**是静态映射
-//                .addResourceLocations("file:D:/usr/local/upload/"); // file:D:/usr/local/upload/是文件在服务器的路径
+//        registry.addResourceHandler()   // 静态映射
+//                .addResourceLocations(); 文件在服务器的路径
     }
 }
 
