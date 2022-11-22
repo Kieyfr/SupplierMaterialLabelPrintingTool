@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface MaterielService {
 
-    List<Materiel> selMateriel();
+    //获取供应商物料表
+    List<Materiel> selMateriel(String suppCode);
 
 }

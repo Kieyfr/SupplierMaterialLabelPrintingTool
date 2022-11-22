@@ -3,6 +3,11 @@
 
 <mapper namespace="com.xydz.suppliermateriallabelprintingtool.mapper.MaterielMapper">
     <select id="selMateriel" resultType="com.xydz.suppliermateriallabelprintingtool.entity.Materiel">
-        select MATERCODE,MATERNAME,MATERMATERIALSPEC,MATERMATERIALTYPE,NUM,REMNUM,MEASCODE,MEASNAME from ncc.view_xinya_po_order_b@DBLIK_PURCHASE
+        select
+            VBILLCODE,MATERCODE,MATERNAME,MATERMATERIALSPEC,MATERMATERIALTYPE
+        from ncc.view_xinya_po_order@DBLIK_PURCHASE a
+            join ncc.view_xinya_po_order_b@DBLIK_PURCHASE b
+                on a.PK_ORDER = b.PK_ORDER
+        where SUPPCODE = #{suppCode}
     </select>
 </mapper>

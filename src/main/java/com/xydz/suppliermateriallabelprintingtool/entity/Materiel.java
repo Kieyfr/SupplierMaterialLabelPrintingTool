@@ -10,6 +10,9 @@ import lombok.Data;
 */
 @Data
 public class Materiel {
+
+    private String VBILLCODE;           //订单号
+
     private String MATERCODE;           //物料编码
 
     private String MATERNAME;           //物料名称
@@ -18,11 +21,4 @@ public class Materiel {
 
     private String MATERMATERIALTYPE;   //物料颜色
 
-    private Double NUM;                 //主数量
-
-    private Double REMNUM;              //剩余数量
-
-    private String MEASCODE;            //单位编码
-
-    private String MEASNAME;            //单位名称
 }

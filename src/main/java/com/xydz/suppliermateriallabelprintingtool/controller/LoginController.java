@@ -23,9 +23,9 @@ public class LoginController {
     private SuppUserService suppUserService;
 
     /**
-     * 获取供应商名称
+     * 获取供应商信息
      *
-     * @return suppName
+     * @return suppUser
     */
     @RequestMapping("getSuppName")
     public ResponseData<SuppUser> getSuppName(@RequestParam("suppCode")String suppCode){

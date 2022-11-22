@@ -15,7 +15,7 @@ public class MaterielServiceImpl implements MaterielService {
     private MaterielMapper materielMapper;
 
     @Override
-    public List<Materiel> selMateriel() {
-        return materielMapper.selMateriel();
+    public List<Materiel> selMateriel(String suppCode) {
+        return materielMapper.selMateriel(suppCode);
     }
 }

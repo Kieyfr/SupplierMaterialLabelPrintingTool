@@ -3,6 +3,7 @@ package com.xydz.suppliermateriallabelprintingtool.controller;
 import com.xydz.suppliermateriallabelprintingtool.entity.Materiel;
 import com.xydz.suppliermateriallabelprintingtool.entity.ResponseData;
 import com.xydz.suppliermateriallabelprintingtool.service.MaterielService;
+import com.xydz.suppliermateriallabelprintingtool.util.LoginUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,8 @@ public class IndexController {
     */
     @RequestMapping("getMateriels")
     public ResponseData<List<Materiel>> getMateriels(){
-        List<Materiel> materielList = materielService.selMateriel();
+        String suppCode = LoginUtil.getLoginUser().getCODE();
+        List<Materiel> materielList = materielService.selMateriel(suppCode);
         if (materielList!=null){
             return new ResponseData<List<Materiel>>("200","获取成功",materielList);
         }
