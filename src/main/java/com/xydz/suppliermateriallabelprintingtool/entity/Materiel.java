@@ -11,6 +11,10 @@ import lombok.Data;
 @Data
 public class Materiel {
 
+    private String PK_ORDER;           //采购订单主键
+
+    private String PK_ORDER_B;           //采购订单明细主键
+
     private String VBILLCODE;           //订单号
 
     private String MATERCODE;           //物料编码

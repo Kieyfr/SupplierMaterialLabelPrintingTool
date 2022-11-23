@@ -18,5 +18,5 @@ mybatis-plus:
 
 #logging:
 #  level:
-#    com.polang.wenkebbsplus.mapper: debug
+#    com.xydz.suppliermateriallabelprintingtool.mapper: debug
 

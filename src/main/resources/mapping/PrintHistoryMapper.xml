@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xydz.suppliermateriallabelprintingtool.mapper.PrintHistoryMapper">
+
+    <resultMap id="map" type="com.xydz.suppliermateriallabelprintingtool.entity.PrintHistory">
+        <id property="PK_ORDER_B" column="PK_ORDER_B" jdbcType="VARCHAR"></id>
+        <result property="PK_ORDER" column="PK_ORDER" jdbcType="VARCHAR"></result>
+        <result property="SUPPCODE" column="SUPPCODE" jdbcType="VARCHAR"></result>
+        <result property="LOTNUM" column="LOTNUM" jdbcType="VARCHAR"></result>
+        <result property="PRINTDATE" column="PRINTDATE" jdbcType="TIMESTAMP"></result>
+    </resultMap>
+
+    <insert id="insPrintHistory">
+        insert into LPC_PRINTHISTORY values (#{PK_ORDER},#{PK_ORDER_B},#{SUPPCODE},#{LOTNUM},#{PRINTDATE})
+    </insert>
+
+    <select id="selPrintHistory" resultMap="map">
+        select * from LPC_PRINTHISTORY where  PK_ORDER_B = #{PK_ORDER_B}
+    </select>
+
+</mapper>

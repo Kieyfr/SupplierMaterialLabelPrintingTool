@@ -1,12 +1,15 @@
 package com.xydz.suppliermateriallabelprintingtool.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
 public class PrintSheet {
+
+    private String PK_ORDER;           //采购订单主键
+
+    private String PK_ORDER_B;           //采购订单明细主键
 
     private String SUPPCODE;            //供应商代码
 
@@ -34,6 +37,6 @@ public class PrintSheet {
 
     private Double GROSSWEIGHT;         //毛重
 
-    private Boolean PRINT;         //毛重
+    private Boolean PRINT;         //是否打印
 
 }
