@@ -1,10 +1,9 @@
 package com.xydz.suppliermateriallabelprintingtool.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xydz.suppliermateriallabelprintingtool.entity.SuppUser;
 import org.apache.ibatis.annotations.Param;
 
-public interface SuppUserMapper extends BaseMapper<SuppUser> {
+public interface SuppUserMapper{
 
     //获取供应商信息
     SuppUser selSuppUser(@Param("suppCode")String suppCode);

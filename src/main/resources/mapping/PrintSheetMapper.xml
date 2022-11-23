@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xydz.suppliermateriallabelprintingtool.mapper.PrintSheetMapper">
+
+    <insert id="insPrintSheets">
+        insert into LPC_PRINTSHEET values (#{SUPPCODE},#{SUPPNAME},#{SUPPSHORTNAME},#{SUPPMATERCODE},#{SUPPLOTNUM},#{VBILLCODE},#{MATERCODE},#{MATERNAME},#{MATERMATERIALSPEC},#{MATERMATERIALTYPE},#{PRODUCEDATE},#{NETWEIGHT},#{GROSSWEIGHT},#{PRINT})
+    </insert>
+
+    <select id="selPrintSheets" resultType="com.xydz.suppliermateriallabelprintingtool.entity.PrintSheet">
+        select * from LPC_PRINTSHEET where  SUPPCODE = #{suppCode}
+    </select>
+
+</mapper>
