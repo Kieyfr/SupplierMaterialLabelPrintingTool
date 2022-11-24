@@ -23,21 +23,21 @@ public class LoginController {
     private SuppUserService suppUserService;
 
     /**
-     * 获取供应商信息
+     * 获取供应商名称
      *
      * @return suppUser
     */
     @RequestMapping("getSuppName")
-    public ResponseData<SuppUser> getSuppName(@RequestParam("suppCode")String suppCode){
+    public ResponseData<String> getSuppName(@RequestParam("suppCode")String suppCode){
         SuppUser suppUser = suppUserService.selSuppUser(suppCode);
         if (suppUser!=null){
             if (suppUserService.selSupp(suppCode)==null){
                 suppUser.setPWD(Md5Util.getMD5String("123456"));
                 suppUserService.insertSuppUser(suppUser);
             }
-            return new ResponseData<SuppUser>("200","获取成功",suppUser);
+            return new ResponseData<String>("200","获取成功",suppUser.getNAME());
         }
-        return new ResponseData<SuppUser>("404","供应商代码不存在",null);
+        return new ResponseData<String>("404","供应商代码不存在",null);
     }
 
     /**

@@ -39,7 +39,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         if (HttpMethod.OPTIONS.toString().equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             System.out.println("OPTIONS");
-            return false;
+            return true;
         }
         String token = request.getHeader("accessToken");
         if (token == null){
