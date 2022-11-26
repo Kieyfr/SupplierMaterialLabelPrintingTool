@@ -25,4 +25,6 @@ public class Materiel {
 
     private String MATERMATERIALTYPE;   //物料颜色
 
+    private Double NUM;                 //订单数量
+
 }

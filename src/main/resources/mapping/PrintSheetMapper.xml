@@ -3,15 +3,51 @@
 
 <mapper namespace="com.xydz.suppliermateriallabelprintingtool.mapper.PrintSheetMapper">
 
-    <select id="selPrintSheetIfexist" resultType="com.xydz.suppliermateriallabelprintingtool.entity.PrintSheet">
+    <resultMap id="map" type="com.xydz.suppliermateriallabelprintingtool.entity.PrintSheet">
+        <id property="PK_ORDER_B" column="PK_ORDER_B" jdbcType="VARCHAR"></id>
+        <result property="PK_ORDER" column="PK_ORDER" jdbcType="VARCHAR"></result>
+        <result property="SUPPCODE" column="SUPPCODE" jdbcType="VARCHAR"></result>
+        <result property="SUPPNAME" column="SUPPNAME" jdbcType="VARCHAR"></result>
+        <result property="SUPPSHORTNAME" column="SUPPSHORTNAME" jdbcType="VARCHAR"></result>
+        <result property="SUPPMATERCODE" column="SUPPMATERCODE" jdbcType="VARCHAR"></result>
+        <result property="SUPPLOTNUM" column="SUPPLOTNUM" jdbcType="VARCHAR"></result>
+        <result property="VBILLCODE" column="VBILLCODE" jdbcType="VARCHAR"></result>
+        <result property="MATERCODE" column="MATERCODE" jdbcType="VARCHAR"></result>
+        <result property="MATERNAME" column="MATERNAME" jdbcType="VARCHAR"></result>
+        <result property="MATERMATERIALSPEC" column="MATERMATERIALSPEC" jdbcType="VARCHAR"></result>
+        <result property="MATERMATERIALTYPE" column="MATERMATERIALTYPE" jdbcType="VARCHAR"></result>
+        <result property="PRODUCEDATE" column="PRODUCEDATE" jdbcType="TIMESTAMP"></result>
+        <result property="NETWEIGHT" column="NETWEIGHT" jdbcType="DOUBLE"></result>
+        <result property="GROSSWEIGHT" column="GROSSWEIGHT" jdbcType="DOUBLE"></result>
+        <result property="NUM" column="NUM" jdbcType="DOUBLE"></result>
+        <result property="PRINT" column="PRINT" jdbcType="BOOLEAN"></result>
+    </resultMap>
+
+    <select id="selPrintSheetIfexist" resultMap="map">
         select * from LPC_PRINTSHEET  PK_ORDER_B = #{pkOrderB}
     </select>
 
     <insert id="insPrintSheet">
-        insert into LPC_PRINTSHEET values (#{PK_ORDER},#{PK_ORDER_B},#{SUPPCODE},#{SUPPNAME},#{SUPPSHORTNAME},#{SUPPMATERCODE},#{SUPPLOTNUM},#{VBILLCODE},#{MATERCODE},#{MATERNAME},#{MATERMATERIALSPEC},#{MATERMATERIALTYPE},#{PRODUCEDATE},#{NETWEIGHT},#{GROSSWEIGHT},#{PRINT})
+        insert into LPC_PRINTSHEET
+        (PK_ORDER,PK_ORDER_B,SUPPCODE,SUPPNAME,SUPPSHORTNAME,SUPPMATERCODE,SUPPLOTNUM,VBILLCODE,MATERCODE,MATERNAME,
+         <if test="MATERMATERIALSPEC!=null">
+             MATERMATERIALSPEC,
+         </if>
+        <if test="MATERMATERIALTYPE!=null">
+            MATERMATERIALTYPE,
+        </if>
+        PRODUCEDATE,NETWEIGHT,GROSSWEIGHT,NUM,PRINT)
+        values (#{PK_ORDER},#{PK_ORDER_B},#{SUPPCODE},#{SUPPNAME},#{SUPPSHORTNAME},#{SUPPMATERCODE},#{SUPPLOTNUM},#{VBILLCODE},#{MATERCODE},#{MATERNAME},
+        <if test="MATERMATERIALSPEC!=null">
+            #{MATERMATERIALSPEC},
+        </if>
+        <if test="MATERMATERIALTYPE!=null">
+            #{MATERMATERIALTYPE},
+        </if>
+            #{PRODUCEDATE},#{NETWEIGHT},#{GROSSWEIGHT},#{NUM},#{PRINT})
     </insert>
 
-    <select id="selPrintSheets" resultType="com.xydz.suppliermateriallabelprintingtool.entity.PrintSheet">
+    <select id="selPrintSheets" resultMap="map">
         select * from LPC_PRINTSHEET where  SUPPCODE = #{suppCode}
     </select>
 

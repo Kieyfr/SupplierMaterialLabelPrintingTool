@@ -74,6 +74,7 @@ public class IndexController {
     public ResponseData<Integer> addPrintSheet(PrintSheet printSheet){
         //检测单子是否存在（暂废弃）
 //        if (printSheetSerivce.selPrintSheetIfexist(printSheet.getPK_ORDER_B())==null){
+        System.out.println(printSheet);
             Integer status = printSheetSerivce.insPrintSheet(printSheet);
             if (status==1){
                 return new ResponseData<Integer>("200","添加成功",status);

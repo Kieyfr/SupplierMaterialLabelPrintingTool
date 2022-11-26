@@ -1,6 +1,7 @@
 package com.xydz.suppliermateriallabelprintingtool.entity;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -31,11 +32,14 @@ public class PrintSheet {
 
     private String MATERMATERIALTYPE;   //物料颜色
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date PRODUCEDATE;           //生产日期
 
     private Double NETWEIGHT;           //净重
 
     private Double GROSSWEIGHT;         //毛重
+
+    private Double NUM;                 //订单数量
 
     private Boolean PRINT;         //是否打印
 

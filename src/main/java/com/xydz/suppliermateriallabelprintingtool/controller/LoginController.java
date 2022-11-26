@@ -4,6 +4,7 @@ import com.xydz.suppliermateriallabelprintingtool.entity.ResponseData;
 import com.xydz.suppliermateriallabelprintingtool.entity.SuppUser;
 import com.xydz.suppliermateriallabelprintingtool.service.SuppUserService;
 import com.xydz.suppliermateriallabelprintingtool.util.JwtUtil;
+import com.xydz.suppliermateriallabelprintingtool.util.LoginUtil;
 import com.xydz.suppliermateriallabelprintingtool.util.Md5Util;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,6 +60,17 @@ public class LoginController {
             return new ResponseData<String>("401","密码错误",null);
         }
         return new ResponseData<String>("404","供应商不存在",null);
+    }
+
+    /**
+     * 获取供应商信息
+     *
+     * @return suppUser
+     */
+    @RequestMapping("getSuppUser")
+    public ResponseData<SuppUser> getSuppUser(){
+        SuppUser suppUser = LoginUtil.getLoginUser();
+        return new ResponseData<SuppUser>("200","获取成功",suppUser);
     }
 
 }

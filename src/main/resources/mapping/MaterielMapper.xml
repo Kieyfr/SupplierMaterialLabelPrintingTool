@@ -2,9 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.xydz.suppliermateriallabelprintingtool.mapper.MaterielMapper">
-    <select id="selMateriel" resultType="com.xydz.suppliermateriallabelprintingtool.entity.Materiel">
+
+    <resultMap id="map" type="com.xydz.suppliermateriallabelprintingtool.entity.Materiel">
+        <id property="PK_ORDER_B" column="PK_ORDER_B" jdbcType="VARCHAR"></id>
+        <result property="PK_ORDER" column="PK_ORDER" jdbcType="VARCHAR"></result>
+        <result property="VBILLCODE" column="VBILLCODE" jdbcType="VARCHAR"></result>
+        <result property="MATERCODE" column="MATERCODE" jdbcType="VARCHAR"></result>
+        <result property="MATERNAME" column="MATERNAME" jdbcType="VARCHAR"></result>
+        <result property="MATERMATERIALSPEC" column="MATERMATERIALSPEC" jdbcType="VARCHAR"></result>
+        <result property="MATERMATERIALTYPE" column="MATERMATERIALTYPE" jdbcType="VARCHAR"></result>
+        <result property="NUM" column="NUM" jdbcType="DOUBLE"></result>
+    </resultMap>
+
+    <select id="selMateriel" resultMap="map">
         select
-            a.PK_ORDER,PK_ORDER_B,VBILLCODE,MATERCODE,MATERNAME,MATERMATERIALSPEC,MATERMATERIALTYPE
+            a.PK_ORDER,PK_ORDER_B,VBILLCODE,MATERCODE,MATERNAME,MATERMATERIALSPEC,MATERMATERIALTYPE,NUM
         from ncc.view_xinya_po_order@DBLIK_PURCHASE a
             join ncc.view_xinya_po_order_b@DBLIK_PURCHASE b
                 on a.PK_ORDER = b.PK_ORDER
