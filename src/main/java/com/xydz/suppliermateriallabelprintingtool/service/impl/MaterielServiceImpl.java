@@ -20,4 +20,9 @@ public class MaterielServiceImpl implements MaterielService {
     public List<Materiel> selMateriel(String suppCode) {
         return materielMapper.selMateriel(suppCode);
     }
+
+    @Override
+    public List<Materiel> searchMateriels(String suppCode, String search) {
+        return materielMapper.searchMateriels(suppCode,search);
+    }
 }

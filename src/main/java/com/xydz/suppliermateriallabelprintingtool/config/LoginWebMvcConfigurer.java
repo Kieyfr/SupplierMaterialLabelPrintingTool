@@ -31,7 +31,8 @@ public class LoginWebMvcConfigurer implements WebMvcConfigurer {
         registry.addInterceptor(loginHandlerInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/login")
-                .excludePathPatterns("/getSuppName");
+                .excludePathPatterns("/getSuppName")
+                .excludePathPatterns("/addSuppUser");
     }
 
     @Override

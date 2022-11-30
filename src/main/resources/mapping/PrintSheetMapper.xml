@@ -24,7 +24,7 @@
     </resultMap>
 
     <select id="selPrintSheetIfexist" resultMap="map">
-        select * from LPC_PRINTSHEET  PK_ORDER_B = #{pkOrderB}
+        select * from LPC_PRINTSHEET where PK_ORDER_B = #{pkOrderB}
     </select>
 
     <insert id="insPrintSheet">
@@ -48,7 +48,47 @@
     </insert>
 
     <select id="selPrintSheets" resultMap="map">
+        select * from LPC_PRINTSHEET where  SUPPCODE = #{suppCode} and PRINT = 1
+    </select>
+
+    <select id="selAllPrintSheets" resultMap="map">
         select * from LPC_PRINTSHEET where  SUPPCODE = #{suppCode}
     </select>
+
+    <select id="selIfPrintSheets" resultMap="map">
+        select * from LPC_PRINTSHEET
+        <where>
+            SUPPCODE = #{SUPPCODE}
+            <if test="SUPPMATERCODE != null and SUPPMATERCODE!=''">
+                and SUPPMATERCODE = #{SUPPMATERCODE}
+            </if>
+            <if test="SUPPLOTNUM!=null and SUPPLOTNUM!=''">
+                and SUPPLOTNUM = #{SUPPLOTNUM}
+            </if>
+            <if test="VBILLCODE!=null and VBILLCODE!=''">
+                and VBILLCODE = #{VBILLCODE}
+            </if>
+            <if test="STARTDATE!=null ">
+                and PRODUCEDATE &gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')
+            </if>
+            <if test="ENDDATE!=null ">
+                and PRODUCEDATE &lt; TO_DATE(#{ENDDATE},'yyyy-MM-dd')
+            </if>
+            <if test="COMPLETION=='已完成' ">
+                and PRINT = 0
+            </if>
+            <if test="COMPLETION=='未完成' ">
+                and PRINT = 1
+            </if>
+        </where>
+    </select>
+
+    <update id="modPrintSheet">
+        update LPC_PRINTSHEET set PRODUCEDATE=#{PRODUCEDATE},NETWEIGHT=#{NETWEIGHT},GROSSWEIGHT={GROSSWEIGHT}where SUPPCODE=#{SUPPCODE}
+    </update>
+
+    <update id="modPrintSheetPrint">
+        update LPC_PRINTSHEET set PRINT = 0 where PK_ORDER_B=#{PK_ORDER_B}
+    </update>
 
 </mapper>

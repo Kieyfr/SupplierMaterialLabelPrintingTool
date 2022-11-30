@@ -2,6 +2,8 @@ package com.xydz.suppliermateriallabelprintingtool.service;
 
 
 import com.xydz.suppliermateriallabelprintingtool.entity.PrintSheet;
+import com.xydz.suppliermateriallabelprintingtool.entity.SelInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,5 +17,17 @@ public interface PrintSheetSerivce  {
 
     //查询到供应商的打印表
     List<PrintSheet> selPrintSheets(String suppCode);
+
+    //查询到供应商的全部完成打印表
+    List<PrintSheet> selAllPrintSheets(String suppCode);
+
+    //查询到供应商的打印表
+    List<PrintSheet> selIfPrintSheets(SelInfo selInfo);
+
+    //修改供应商的打印表
+    Integer modPrintSheet(PrintSheet printSheet);
+
+    //修改打印表为完成
+    Integer modPrintSheetPrint(String PK_ORDER_B);
 
 }

@@ -29,16 +29,32 @@ public class LoginController {
      * @return suppUser
     */
     @RequestMapping("getSuppName")
-    public ResponseData<String> getSuppName(@RequestParam("suppCode")String suppCode){
+    public ResponseData<SuppUser> getSuppName(@RequestParam("suppCode")String suppCode){
+        System.out.println(suppCode);
         SuppUser suppUser = suppUserService.selSuppUser(suppCode);
         if (suppUser!=null){
             if (suppUserService.selSupp(suppCode)==null){
-                suppUser.setPWD(Md5Util.getMD5String("123456"));
-                suppUserService.insertSuppUser(suppUser);
+                return new ResponseData<SuppUser>("201","供应商第一次登录",suppUser);
             }
-            return new ResponseData<String>("200","获取成功",suppUser.getNAME());
+            return new ResponseData<SuppUser>("200","获取成功",suppUser);
         }
-        return new ResponseData<String>("404","供应商代码不存在",null);
+        return new ResponseData<SuppUser>("404","供应商代码不存在",null);
+    }
+
+    /**
+     * 供应商第一次登录设置密码
+     *
+     * @return suppUser
+     */
+    @RequestMapping("addSuppUser")
+    public ResponseData<Integer> addSuppUser(SuppUser suppUser){
+        System.out.println(suppUser);
+        suppUser.setPWD(Md5Util.getMD5String(suppUser.getPWD()));
+        int i = suppUserService.insertSuppUser(suppUser);
+        if (i>0){
+            return new ResponseData<Integer>("200","添加成功",i);
+        }
+        return new ResponseData<Integer>("500","添加失败",i);
     }
 
     /**

@@ -11,12 +11,35 @@
         <result property="PRINTDATE" column="PRINTDATE" jdbcType="TIMESTAMP"></result>
     </resultMap>
 
+    <resultMap id="showMap" type="com.xydz.suppliermateriallabelprintingtool.entity.ShowPrintHistory">
+        <id property="PK_ORDER_B" column="PK_ORDER_B" jdbcType="VARCHAR"></id>
+        <result property="PK_ORDER" column="PK_ORDER" jdbcType="VARCHAR"></result>
+        <result property="MATERNAME" column="MATERNAME" jdbcType="VARCHAR"></result>
+        <result property="SUPPMATERCODE" column="SUPPMATERCODE" jdbcType="VARCHAR"></result>
+        <result property="PRODUCEDATE" column="PRODUCEDATE" jdbcType="TIMESTAMP"></result>
+        <result property="LOTNUM" column="LOTNUM" jdbcType="VARCHAR"></result>
+        <result property="NETWEIGHT" column="NETWEIGHT" jdbcType="DOUBLE"></result>
+        <result property="GROSSWEIGHT" column="GROSSWEIGHT" jdbcType="DOUBLE"></result>
+        <result property="SUPPLOTNUM" column="SUPPLOTNUM" jdbcType="VARCHAR"></result>
+        <result property="MATERMATERIALSPEC" column="MATERMATERIALSPEC" jdbcType="VARCHAR"></result>
+        <result property="MATERMATERIALTYPE" column="MATERMATERIALTYPE" jdbcType="VARCHAR"></result>
+        <result property="PRINTDATE" column="PRINTDATE" jdbcType="TIMESTAMP"></result>
+    </resultMap>
+
     <insert id="insPrintHistory">
-        insert into LPC_PRINTHISTORY values (#{PK_ORDER},#{PK_ORDER_B},#{SUPPCODE},#{LOTNUM},#{PRINTDATE})
+        insert into LPC_PRINTHISTORY values (#{PK_ORDER},#{PK_ORDER_B},#{SUPPCODE},#{LOTNUM},#{PRODUCEDATE},#{NETWEIGHT},#{GROSSWEIGHT},#{SUPPLOTNUM},#{PRINTDATE})
     </insert>
 
-    <select id="selPrintHistory" resultMap="map">
-        select * from LPC_PRINTHISTORY where  PK_ORDER_B = #{PK_ORDER_B}
+    <delete id="delPrintHistory">
+        delete from LPC_PRINTHISTORY where PK_ORDER_B = #{PK_ORDER_B} and LOTNUM = #{LOTNUM}
+    </delete>
+
+    <select id="selPrintHistoryNum" resultType="com.xydz.suppliermateriallabelprintingtool.entity.Print">
+        select count(*) HistoryNum,max(lps.num) Num from LPC_PRINTHISTORY lph join LPC_PRINTSHEET lps ON lph.pk_order_b = lps.pk_order_b where lph.pk_order_b = #{PK_ORDER_B}
+    </select>
+
+    <select id="selPrintHistory" resultMap="showMap">
+        select lph.PK_ORDER,lph.PK_ORDER_B,MATERNAME,SUPPMATERCODE,lph.PRODUCEDATE,LOTNUM,lph.NETWEIGHT,lph.GROSSWEIGHT,lph.SUPPLOTNUM,MATERMATERIALSPEC,MATERMATERIALTYPE,lph.PRINTDATE from LPC_PRINTHISTORY lph join LPC_PRINTSHEET lps ON lph.pk_order_b = lps.pk_order_b  where lph.pk_order_b = #{PK_ORDER_B}
     </select>
 
 </mapper>

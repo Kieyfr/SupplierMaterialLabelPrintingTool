@@ -9,4 +9,7 @@ public interface MaterielService {
     //获取供应商物料表
     List<Materiel> selMateriel(String suppCode);
 
+    //查询供应商物料表
+    List<Materiel> searchMateriels(String suppCode,String search);
+
 }

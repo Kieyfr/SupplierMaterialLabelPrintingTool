@@ -23,16 +23,16 @@ public class LotNumUtil  {
      * 供应商流水号自减
      *
     */
-    public static void numDec(String suppCode){
-        numMap.put(suppCode,numMap.get(suppCode)-1);
+    public static synchronized void numDec(String PK_ORDER_B){
+        numMap.put(PK_ORDER_B,numMap.get(PK_ORDER_B)-1);
     }
 
     /**
      * 供应商流水号自增
      *
      */
-    public static void numAdd(String suppCode){
-        numMap.put(suppCode,numMap.get(suppCode)+1);
+    public static synchronized void numAdd(String PK_ORDER_B){
+        numMap.put(PK_ORDER_B,numMap.get(PK_ORDER_B)+1);
     }
 
     /**
@@ -40,12 +40,12 @@ public class LotNumUtil  {
      *
      * @return lotNum
     */
-    public static String  getLotNum(String suppCode){
-        if (numMap.get(suppCode)==null){
-            numMap.put(suppCode,1);
+    public static synchronized String getLotNum(String PK_ORDER_B){
+        if (numMap.get(PK_ORDER_B)==null){
+            numMap.put(PK_ORDER_B,1);
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMdd");
-        String lotNum = simpleDateFormat.format(new Date()) + String.format("%0".concat(String.valueOf(4)).concat("d"), numMap.get(suppCode));
+        String lotNum = simpleDateFormat.format(new Date()) + String.format("%0".concat(String.valueOf(4)).concat("d"), numMap.get(PK_ORDER_B));
         return lotNum;
     }
 

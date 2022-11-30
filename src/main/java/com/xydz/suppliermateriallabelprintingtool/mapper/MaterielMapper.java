@@ -10,4 +10,7 @@ public interface MaterielMapper {
     //获取供应商物料表
     List<Materiel> selMateriel(@Param("suppCode") String suppCode);
 
+    //查询供应商物料表
+    List<Materiel> searchMateriels(@Param("suppCode")String suppCode,@Param("search")String search);
+
 }

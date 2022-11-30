@@ -22,4 +22,23 @@
                 on a.PK_ORDER = b.PK_ORDER
         where SUPPCODE = #{suppCode}
     </select>
+
+    <select id="searchMateriels" resultMap="map">
+        select
+            a.PK_ORDER,PK_ORDER_B,VBILLCODE,MATERCODE,MATERNAME,MATERMATERIALSPEC,MATERMATERIALTYPE,NUM
+        from ncc.view_xinya_po_order@DBLIK_PURCHASE a
+                 join ncc.view_xinya_po_order_b@DBLIK_PURCHASE b
+                      on a.PK_ORDER = b.PK_ORDER
+        <where>
+            SUPPCODE = #{suppCode}
+            <if test="search!=null || search!=''">
+                and (VBILLCODE like CONCAT(CONCAT('%',#{search}),'%')
+                    or MATERCODE like CONCAT(CONCAT('%',#{search}),'%')
+                    or MATERNAME like CONCAT(CONCAT('%',#{search}),'%')
+                    or MATERMATERIALSPEC like CONCAT(CONCAT('%',#{search}),'%')
+                    or MATERMATERIALTYPE like CONCAT(CONCAT('%',#{search}),'%')
+                    )
+            </if>
+        </where>
+    </select>
 </mapper>
