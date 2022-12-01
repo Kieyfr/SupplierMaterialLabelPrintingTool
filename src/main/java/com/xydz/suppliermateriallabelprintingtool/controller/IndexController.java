@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -194,18 +191,19 @@ public class IndexController {
      * @return status
      */
     @RequestMapping("addPrintHistory")
-    public synchronized ResponseData<Integer> addPrintHistory(PrintHistory printHistory){
+    public synchronized ResponseData<String> addPrintHistory(PrintHistory printHistory){
         printHistory.setSUPPCODE(LoginUtil.getLoginUser().getCODE());
         printHistory.setLOTNUM(LotNumUtil.getLotNum(printHistory.getPK_ORDER_B()));
         Integer status = printHistoryService.insPrintHistory(printHistory);
         if (status==1){
+            String lotNum = LotNumUtil.getLotNum(printHistory.getPK_ORDER_B());
             LotNumUtil.numAdd(printHistory.getPK_ORDER_B());
-            return new ResponseData<Integer>("200","添加成功",status);
+            return new ResponseData<String>("200","添加成功",lotNum);
         }else  if (status==201){
             LotNumUtil.numAdd(printHistory.getPK_ORDER_B());
-            return new ResponseData<Integer>("201","订单完成",status);
+            return new ResponseData<String>("201","订单完成",null);
         }
-        return new ResponseData<Integer>("500","添加失败",null);
+        return new ResponseData<String>("500","添加失败",null);
     }
 
     /**

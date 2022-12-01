@@ -101,9 +101,4 @@ public class Md5Util {
         stringbuffer.append(c0);
         stringbuffer.append(c1);
     }
-
-    public static void main(String[] args) {
-        String srt = "123456";
-        System.out.println(getMD5String(srt).toUpperCase());
-    }
 }
