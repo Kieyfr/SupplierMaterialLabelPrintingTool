@@ -14,9 +14,26 @@ spring:
 mybatis-plus:
   mapper-locations: classpath:mapping/*.xml
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
 
 #logging:
 #  level:
 #    com.xydz.suppliermateriallabelprintingtool.mapper: debug
+
+logging:
+  file:
+    path: log/
+  level:
+    com.xydz.suppliermateriallabelprintingtool.mapper: debug
+
+
+#slf4j:
+#  appender:
+#    FILE: org.apache.slf4j.DailyRollingFileAppender
+
+
+
+
+
+
 
