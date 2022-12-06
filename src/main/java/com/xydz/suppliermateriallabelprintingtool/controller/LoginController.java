@@ -9,6 +9,7 @@ import com.xydz.suppliermateriallabelprintingtool.util.Md5Util;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author xiachenchen
@@ -39,6 +40,20 @@ public class LoginController {
             return new ResponseData<SuppUser>("200","获取成功",suppUser);
         }
         return new ResponseData<SuppUser>("404","供应商代码不存在",null);
+    }
+
+    /**
+     * 获取所有供应商名称
+     *
+     * @return suppUser
+     */
+    @RequestMapping("adminGetSuppNames")
+    public ResponseData<List<SuppUser>> adminGetSuppNames(){
+        List<SuppUser> suppUserList = suppUserService.adminSelSuppUser();
+        if (suppUserList!=null){
+            return new ResponseData<List<SuppUser>>("200","获取成功",suppUserList);
+        }
+        return new ResponseData<>("404","供应商代码不存在",null);
     }
 
     /**
