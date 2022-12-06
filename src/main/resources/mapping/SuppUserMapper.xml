@@ -5,6 +5,9 @@
     <select id="selSuppUser" resultType="com.xydz.suppliermateriallabelprintingtool.entity.SuppUser">
         select CODE,NAME,SHORTNAME from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE where CODE = #{suppCode}
     </select>
+    <select id="adminSelSuppUser" resultType="com.xydz.suppliermateriallabelprintingtool.entity.SuppUser">
+        select CODE,NAME,SHORTNAME from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE
+    </select>
     <select id="selSupp" resultType="com.xydz.suppliermateriallabelprintingtool.entity.SuppUser">
         select * from LPC_SUPPLIER where CODE = #{suppCode}
     </select>

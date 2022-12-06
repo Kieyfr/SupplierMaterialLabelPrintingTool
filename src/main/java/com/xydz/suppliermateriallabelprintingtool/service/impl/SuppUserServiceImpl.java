@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class SuppUserServiceImpl implements SuppUserService {
@@ -18,6 +19,11 @@ public class SuppUserServiceImpl implements SuppUserService {
     @Override
     public SuppUser selSuppUser(String suppCode ){
         return userMapper.selSuppUser(suppCode);
+    }
+
+    @Override
+    public List<SuppUser> adminSelSuppUser() {
+        return userMapper.adminSelSuppUser();
     }
 
     @Transactional
