@@ -13,5 +13,4 @@ public class SupplierMaterialLabelPrintingToolApplication {
     public static void main(String[] args) {
         SpringApplication.run(SupplierMaterialLabelPrintingToolApplication.class, args);
     }
-
 }
