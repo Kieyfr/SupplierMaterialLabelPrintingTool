@@ -1,5 +1,6 @@
 package com.xydz.suppliermateriallabelprintingtool.controller;
 
+import com.xydz.suppliermateriallabelprintingtool.entity.Login;
 import com.xydz.suppliermateriallabelprintingtool.entity.ResponseData;
 import com.xydz.suppliermateriallabelprintingtool.entity.SuppUser;
 import com.xydz.suppliermateriallabelprintingtool.service.SuppUserService;
@@ -81,11 +82,16 @@ public class LoginController {
      */
     @RequestMapping("login")
     public ResponseData<String> login(@RequestParam("suppCode")String suppCode,
-                                      @RequestParam("password")String password){
+                                      @RequestParam("password")String password,
+                                      @RequestParam("state")Integer state){
         SuppUser suppUser = suppUserService.selSupp(suppCode);
+        System.out.println(suppUser);
         if (suppUser!=null){
             if (suppUser.getPWD().equals(Md5Util.getMD5String(password))){
-                String token = JwtUtil.sign(suppUser);
+                Login login=new Login();
+                login.setSuppUser(suppUser);
+                login.setState(state);
+                String token = JwtUtil.sign(login);
                 return new ResponseData<String>("200","登录成功",token);
             }
             return new ResponseData<String>("401","密码错误",null);
@@ -94,7 +100,50 @@ public class LoginController {
     }
 
     /**
-     * 获取供应商信息
+     * 管理员无需密码登录
+     *
+     * @param  suppCode
+     * @return suppName
+     */
+    @RequestMapping("loginAdminsupplier")
+    public ResponseData<String> loginAdminsupplier(@RequestParam("suppCode")String suppCode,
+                                                   @RequestParam("state")Integer state){
+        SuppUser suppUser = suppUserService.selSupp(suppCode);
+        if (suppUser!=null){
+                Login login=new Login();
+                login.setSuppUser(suppUser);
+                login.setState(state);
+                String token = JwtUtil.sign(login);
+                return new ResponseData<String>("200","登录成功",token);
+        }
+        return new ResponseData<String>("404","供应商从没登录过此网站",null);
+    }
+
+    @RequestMapping("loginAdmin")
+    public ResponseData<String> loginAdmin(@RequestParam("admin")String admin,
+                                      @RequestParam("password")String password,
+                                           @RequestParam("state")Integer state){
+        if (!admin.equals("admin")){
+            return new ResponseData<String>("404","账号错误",null);
+        } else if (!password.equals("xinyaadmin123")) {
+            return new ResponseData<String>("404","密码错误",null);
+        }else{
+            SuppUser suppUser=new SuppUser();
+            suppUser.setNAME("admin");
+            suppUser.setCODE("0");
+            suppUser.setPWD("xinyaadmin123");
+            suppUser.setSHORTNAME("admin");
+            Login login=new Login();
+            login.setSuppUser(suppUser);
+            login.setState(state);
+            String token = JwtUtil.sign(login);
+            return new ResponseData<String>("200","登录成功",token);
+
+        }
+    }
+
+    /**
+     * 获取登录的供应商信息
      *
      * @return suppUser
      */
@@ -103,5 +152,19 @@ public class LoginController {
         SuppUser suppUser = LoginUtil.getLoginUser();
         return new ResponseData<SuppUser>("200","获取成功",suppUser);
     }
+    /**
+     * 获取登录state信息
+     *
+     * @return Integer
+     */
+    @RequestMapping("getState")
+    public ResponseData<Integer> getState(){
+        Integer state=LoginUtil.getState();
+        if (state!=null){
+            return new ResponseData<Integer>("200","获取成功",state);
+        }else {
+            return new ResponseData<Integer>("404","登录信息有误",null);
+        }
 
+    }
 }

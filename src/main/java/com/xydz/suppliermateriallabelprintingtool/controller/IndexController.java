@@ -4,6 +4,7 @@ import com.xydz.suppliermateriallabelprintingtool.entity.*;
 import com.xydz.suppliermateriallabelprintingtool.service.MaterielService;
 import com.xydz.suppliermateriallabelprintingtool.service.PrintHistoryService;
 import com.xydz.suppliermateriallabelprintingtool.service.PrintSheetSerivce;
+import com.xydz.suppliermateriallabelprintingtool.service.SuppUserService;
 import com.xydz.suppliermateriallabelprintingtool.util.LoginUtil;
 import com.xydz.suppliermateriallabelprintingtool.util.LotNumUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,9 @@ import java.util.List;
 */
 @RestController
 public class IndexController {
+
+    @Resource
+    private SuppUserService suppUserService;
 
     @Resource
     private MaterielService materielService;
@@ -73,13 +77,40 @@ public class IndexController {
     }
 
     /**
+     * 根据供应商代码获取物料信息列表
+     *
+     * @return materielList
+     */
+    @RequestMapping("getMaterielsByCode")
+    public ResponseData<List<Materiel>> getMaterielsByCode(String suppCode){
+
+        List<Materiel> materielList = materielService.selMateriel(suppCode);
+        List<PrintSheet> printSheets = printSheetSerivce.selAllPrintSheets(suppCode);
+        if (materielList!=null){
+            if (printSheets!=null){
+                for(PrintSheet j : printSheets){
+                    for(Materiel i : materielList){
+                        if (j.getPK_ORDER_B().equals(i.getPK_ORDER_B())){
+                            materielList.remove(materielList.indexOf(i));
+                            break;
+                        }
+                    }
+                }
+            }
+            return new ResponseData<List<Materiel>>("200","获取成功",materielList);
+        }
+        return new ResponseData<List<Materiel>>("404","物料列表为空",null);
+    }
+
+    /**
      * 查找物料信息列表
      *
      * @return materielList
      */
     @RequestMapping("searchMateriels")
-    public ResponseData<List<Materiel>> getMateriels(@RequestParam("search")String search){
-        String suppCode = LoginUtil.getLoginUser().getCODE();
+    public ResponseData<List<Materiel>> getMateriels(@RequestParam("search")String search,
+                                                     @RequestParam("suppCode")String suppCode){
+
         List<Materiel> materielList = materielService.searchMateriels(suppCode,search);
         List<PrintSheet> printSheets = printSheetSerivce.selAllPrintSheets(suppCode);
         if (materielList!=null){
@@ -149,6 +180,20 @@ public class IndexController {
     }
 
     /**
+     * 根据供应商代码获取供应商打印列表
+     *
+     * @return printSheets
+     */
+    @RequestMapping("getPrintSheetsByCode")
+    public ResponseData<List<PrintSheet>> getPrintSheetsByCode(String suppCode){
+        List<PrintSheet> printSheets = printSheetSerivce.selPrintSheets(suppCode);
+        if (printSheets!=null){
+            return new ResponseData<List<PrintSheet>>("200","获取成功",printSheets);
+        }
+        return new ResponseData<List<PrintSheet>>("500","获取失败",null);
+    }
+
+    /**
      * 条件查询供应商打印列表
      *
      * @return printSheets
@@ -157,6 +202,41 @@ public class IndexController {
     public ResponseData<List<PrintSheet>> getIfPrintSheets(SelInfo selInfo){
         selInfo.setSUPPCODE(LoginUtil.getLoginUser().getCODE());
         System.out.println(selInfo);
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        if (selInfo.getSTARTDATE()!=null){
+//            Date parse = null;
+//            try {
+//                parse = simpleDateFormat.parse(simpleDateFormat.format(selInfo.getSTARTDATE()));
+//                selInfo.setSTARTDATE(parse);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        if (selInfo.getENDDATE()!=null){
+//            Date parse = null;
+//            try {
+//                parse = simpleDateFormat.parse(simpleDateFormat.format(selInfo.getENDDATE()));
+//                selInfo.setENDDATE(parse);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        System.out.println(selInfo);
+        List<PrintSheet> printSheets = printSheetSerivce.selIfPrintSheets(selInfo);
+        if (printSheets!=null){
+            return new ResponseData<List<PrintSheet>>("200","获取成功",printSheets);
+        }
+        return new ResponseData<List<PrintSheet>>("500","获取失败",null);
+    }
+
+    /**
+     * 条件查询供应商打印列表
+     *
+     * @return printSheets
+     */
+    @RequestMapping("getIfPrintSheetsByCode")
+    public ResponseData<List<PrintSheet>> getIfPrintSheetsByCode(SelInfo selInfo){
+
 //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //        if (selInfo.getSTARTDATE()!=null){
 //            Date parse = null;
@@ -241,6 +321,19 @@ public class IndexController {
     public ResponseData<Print> selPrintHistoryNum(@RequestParam("PK_ORDER_B")String PK_ORDER_B){
         Print print = printHistoryService.selPrintHistoryNum(PK_ORDER_B);
         return new ResponseData<Print>("200","获取成功",print);
+    }
+
+    /**
+     * 根据供应商ID获取供应商信息
+     *
+     * @return suppUser
+     */
+    @RequestMapping("getSupplier")
+    public ResponseData<SuppUser> getSupplier(@RequestParam("suppCode")String suppCode){
+        SuppUser suppUser = suppUserService.selSuppUser(suppCode);
+        System.out.println(suppCode);
+        System.out.println(suppUser);
+        return new ResponseData<SuppUser>("200","获取成功",suppUser);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.xydz.suppliermateriallabelprintingtool.config;
 
+import com.xydz.suppliermateriallabelprintingtool.entity.Login;
 import com.xydz.suppliermateriallabelprintingtool.entity.SuppUser;
 import com.xydz.suppliermateriallabelprintingtool.service.SuppUserService;
 import com.xydz.suppliermateriallabelprintingtool.util.JwtUtil;
@@ -48,13 +49,34 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         //验证token
         if (!JwtUtil.verify(token)){
             throw new NoteException("请重新登录",10002);
+        }else {
+            Integer state = JwtUtil.getState(token);
+            System.out.println(state);
+            SuppUser suppUser = null;
+            if (state == 0) {
+
+                suppUser = suppUserService.selSupp(JwtUtil.getSuppCode(token));
+                System.out.println("登录用户：admin");
+                if (suppUser == null) {
+                    suppUser=new SuppUser();
+                    suppUser.setNAME("admin");
+                    suppUser.setCODE("0");
+                    suppUser.setPWD("xinyaadmin123");
+                    suppUser.setSHORTNAME("admin");
+                }
+            } else {
+                suppUser = suppUserService.selSupp(JwtUtil.getSuppCode(token));
+                System.out.println("登录用户：" + suppUser.getSHORTNAME());
+            }
+
+            if (suppUser == null) {
+                throw new NoteException("请重新登录", 10002);
+            }
+            Login login=new Login();
+            login.setState(state);
+            login.setSuppUser(suppUser);
+            LoginUtil.setLoginUser(login);
         }
-        SuppUser suppUser = suppUserService.selSupp(JwtUtil.getSuppCode(token));
-        System.out.println("登录用户："+suppUser.getSHORTNAME());
-        if (suppUser==null) {
-            throw new NoteException("请重新登录",10002);
-        }
-        LoginUtil.setLoginUser(suppUser);
         return true;
     }
 

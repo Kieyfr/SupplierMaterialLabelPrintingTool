@@ -58,15 +58,17 @@
     <select id="selIfPrintSheets" resultMap="map">
         select * from LPC_PRINTSHEET
         <where>
-            SUPPCODE = #{SUPPCODE}
+            <if test="SUPPCODE!=null and SUPPCODE!=''">
+                and SUPPCODE = #{SUPPCODE}
+            </if>
             <if test="SUPPMATERCODE != null and SUPPMATERCODE!=''">
-                and SUPPMATERCODE = #{SUPPMATERCODE}
+                and SUPPMATERCODE like CONCAT(CONCAT('%',#{SUPPMATERCODE}),'%')
             </if>
             <if test="SUPPLOTNUM!=null and SUPPLOTNUM!=''">
-                and SUPPLOTNUM = #{SUPPLOTNUM}
+                and SUPPLOTNUM like CONCAT(CONCAT('%',#{SUPPLOTNUM}),'%')
             </if>
             <if test="VBILLCODE!=null and VBILLCODE!=''">
-                and VBILLCODE = #{VBILLCODE}
+                and VBILLCODE like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
             </if>
             <if test="STARTDATE!=null ">
                 and PRODUCEDATE &gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')

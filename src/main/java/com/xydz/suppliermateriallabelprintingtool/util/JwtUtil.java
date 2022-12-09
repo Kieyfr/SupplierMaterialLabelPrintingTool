@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.xydz.suppliermateriallabelprintingtool.entity.Login;
 import com.xydz.suppliermateriallabelprintingtool.entity.SuppUser;
 
 import java.io.UnsupportedEncodingException;
@@ -28,21 +29,25 @@ public class JwtUtil {
 
     /**
      * 生成token
-     * @param suppUser
+     * @param login
      * @return
      */
-    public static String sign(SuppUser suppUser){
+    public static String sign(Login login){
 //        Date date = new Date(TimeUtil.getTimeStampMillisecond() + EXPIRE_TIME);
         try {
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
             Map<String, Object> header = new HashMap<String, Object>();
             header.put("typ","JWT");
             header.put("alg","HS256");
+            SuppUser suppUser=login.getSuppUser();
+            Integer state=login.getState();
+
             return JWT.create()
                     .withHeader(header)
                     .withClaim("CODE",suppUser.getCODE())
                     .withClaim("NAME",suppUser.getNAME())
                     .withClaim("SHORTNAME",suppUser.getSHORTNAME())
+                    .withClaim("STATE",state+"")
 //                    .withExpiresAt(date)
                     .withIssuedAt(new Date())
                     .sign(algorithm);
@@ -50,6 +55,8 @@ public class JwtUtil {
             return null;
         }
     }
+
+
 
     /**
      * 校验token
@@ -75,6 +82,19 @@ public class JwtUtil {
     public static String getSuppCode(String token){
         DecodedJWT jwt = JWT.decode(token);
         return jwt.getClaim("CODE").asString();
+    }
+    /**
+     * 获取是否是管理员登录
+     * @param token
+     * @return
+     */
+    public static Integer getState(String token) {
+        DecodedJWT jwt = JWT.decode(token);
+        String State = jwt.getClaim("STATE").asString();
+        if (State == null || State == "") {
+            State="1";
+        }
+        return Integer.valueOf(State);
     }
 
 }

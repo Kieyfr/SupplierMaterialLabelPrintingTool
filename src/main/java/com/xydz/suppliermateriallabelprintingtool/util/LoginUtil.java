@@ -1,5 +1,6 @@
 package com.xydz.suppliermateriallabelprintingtool.util;
 
+import com.xydz.suppliermateriallabelprintingtool.entity.Login;
 import com.xydz.suppliermateriallabelprintingtool.entity.SuppUser;
 
 /**
@@ -10,15 +11,24 @@ import com.xydz.suppliermateriallabelprintingtool.entity.SuppUser;
 */
 
 public class LoginUtil {
-    private static ThreadLocal<SuppUser> threadLocal = new ThreadLocal<SuppUser>();
+    private static ThreadLocal<Login> threadLocal = new ThreadLocal<Login>();
+    public static void setLoginUser(Login login){
 
-    public static void setLoginUser(SuppUser suppUser){
-        threadLocal.set(suppUser);
+        threadLocal.set(login);
     }
 
     public static SuppUser getLoginUser(){
-        SuppUser suppUser = threadLocal.get();
+        Login login=threadLocal.get();
+        SuppUser suppUser = login.getSuppUser();
         return suppUser;
+    }
+
+
+
+    public static Integer getState(){
+        Login login=threadLocal.get();
+        Integer state = login.getState();
+        return state;
     }
     public static void remove(){
         threadLocal.remove();
