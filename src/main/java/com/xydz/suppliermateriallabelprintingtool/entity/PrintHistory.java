@@ -28,4 +28,6 @@ public class PrintHistory {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date PRINTDATE;           //打印日期
 
+    private String PALLET;          //托盘码，将所有一起的批号记录下来,用，隔开
+
 }

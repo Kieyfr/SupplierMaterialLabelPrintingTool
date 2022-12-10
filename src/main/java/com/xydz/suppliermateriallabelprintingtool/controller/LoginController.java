@@ -99,25 +99,7 @@ public class LoginController {
         return new ResponseData<String>("404","供应商不存在",null);
     }
 
-    /**
-     * 管理员无需密码登录
-     *
-     * @param  suppCode
-     * @return suppName
-     */
-    @RequestMapping("loginAdminsupplier")
-    public ResponseData<String> loginAdminsupplier(@RequestParam("suppCode")String suppCode,
-                                                   @RequestParam("state")Integer state){
-        SuppUser suppUser = suppUserService.selSupp(suppCode);
-        if (suppUser!=null){
-                Login login=new Login();
-                login.setSuppUser(suppUser);
-                login.setState(state);
-                String token = JwtUtil.sign(login);
-                return new ResponseData<String>("200","登录成功",token);
-        }
-        return new ResponseData<String>("404","供应商从没登录过此网站",null);
-    }
+
 
     @RequestMapping("loginAdmin")
     public ResponseData<String> loginAdmin(@RequestParam("admin")String admin,

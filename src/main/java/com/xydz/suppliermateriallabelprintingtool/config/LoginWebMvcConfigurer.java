@@ -34,8 +34,7 @@ public class LoginWebMvcConfigurer implements WebMvcConfigurer {
                 .excludePathPatterns("/getSuppName")
                 .excludePathPatterns("/addSuppUser")
                 .excludePathPatterns("/adminGetSuppNames")
-                .excludePathPatterns("/loginAdmin")
-                .excludePathPatterns("/loginAdminsupplier");
+                .excludePathPatterns("/loginAdmin");
 
     }
 

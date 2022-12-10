@@ -9,6 +9,7 @@
         <result property="SUPPCODE" column="SUPPCODE" jdbcType="VARCHAR"></result>
         <result property="LOTNUM" column="LOTNUM" jdbcType="VARCHAR"></result>
         <result property="PRINTDATE" column="PRINTDATE" jdbcType="TIMESTAMP"></result>
+        <result property="PALLET" column="PALLET" jdbcType="VARCHAR"></result>
     </resultMap>
 
     <resultMap id="showMap" type="com.xydz.suppliermateriallabelprintingtool.entity.ShowPrintHistory">
@@ -24,10 +25,11 @@
         <result property="MATERMATERIALSPEC" column="MATERMATERIALSPEC" jdbcType="VARCHAR"></result>
         <result property="MATERMATERIALTYPE" column="MATERMATERIALTYPE" jdbcType="VARCHAR"></result>
         <result property="PRINTDATE" column="PRINTDATE" jdbcType="TIMESTAMP"></result>
+        <result property="PALLET" column="PALLET" jdbcType="VARCHAR"></result>
     </resultMap>
 
     <insert id="insPrintHistory">
-        insert into LPC_PRINTHISTORY values (#{PK_ORDER},#{PK_ORDER_B},#{SUPPCODE},#{LOTNUM},#{PRODUCEDATE},#{NETWEIGHT},#{GROSSWEIGHT},#{SUPPLOTNUM},#{PRINTDATE})
+        insert into LPC_PRINTHISTORY values (#{PK_ORDER},#{PK_ORDER_B},#{SUPPCODE},#{LOTNUM},#{PRODUCEDATE},#{NETWEIGHT},#{GROSSWEIGHT},#{SUPPLOTNUM},#{PRINTDATE},#{PALLET})
     </insert>
 
     <delete id="delPrintHistory">
@@ -39,7 +41,7 @@
     </select>
 
     <select id="selPrintHistory" resultMap="showMap">
-        select lph.PK_ORDER,lph.PK_ORDER_B,MATERNAME,SUPPMATERCODE,lph.PRODUCEDATE,LOTNUM,lph.NETWEIGHT,lph.GROSSWEIGHT,lph.SUPPLOTNUM,MATERMATERIALSPEC,MATERMATERIALTYPE,lph.PRINTDATE from LPC_PRINTHISTORY lph join LPC_PRINTSHEET lps ON lph.pk_order_b = lps.pk_order_b  where lph.pk_order_b = #{PK_ORDER_B}
+        select lph.PK_ORDER,lph.PK_ORDER_B,MATERNAME,SUPPMATERCODE,lph.PRODUCEDATE,LOTNUM,lph.NETWEIGHT,lph.GROSSWEIGHT,lph.SUPPLOTNUM,MATERMATERIALSPEC,MATERMATERIALTYPE,lph.PRINTDATE,lph.PALLET from LPC_PRINTHISTORY lph join LPC_PRINTSHEET lps ON lph.pk_order_b = lps.pk_order_b  where lph.pk_order_b = #{PK_ORDER_B}
     </select>
 
 </mapper>
