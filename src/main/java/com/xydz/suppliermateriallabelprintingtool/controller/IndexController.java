@@ -272,7 +272,7 @@ public class IndexController {
      */
     @RequestMapping("addPrintHistory")
     public synchronized ResponseData<String> addPrintHistory(PrintHistory printHistory){
-        printHistory.setSUPPCODE(LoginUtil.getLoginUser().getCODE());
+        System.out.println(printHistory.getPRINTDATE());
         printHistory.setLOTNUM(LotNumUtil.getLotNum(printHistory.getPK_ORDER_B()));
         Integer status = printHistoryService.insPrintHistory(printHistory);
         if (status==1){

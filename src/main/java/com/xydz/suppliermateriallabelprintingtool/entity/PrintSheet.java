@@ -1,5 +1,6 @@
 package com.xydz.suppliermateriallabelprintingtool.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -33,6 +34,7 @@ public class PrintSheet {
     private String MATERMATERIALTYPE;   //物料颜色
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date PRODUCEDATE;           //生产日期
 
     private Double NETWEIGHT;           //净重

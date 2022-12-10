@@ -17,7 +17,7 @@ public class ShowPrintHistory {
 
     private String SUPPMATERCODE;       //供应商料号
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date PRODUCEDATE;           //生产日期
 
     private String LOTNUM;            //批号
@@ -31,7 +31,7 @@ public class ShowPrintHistory {
     private String MATERMATERIALSPEC;   //物料规格
 
     private String MATERMATERIALTYPE;   //物料颜色
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date PRINTDATE;           //打印日期
 
     private String PALLET;          //托盘码，将所有一起的批号记录下来,用，隔开
