@@ -25,7 +25,7 @@ public class PrintHistoryServiceImpl implements PrintHistoryService {
     @Override
     public Integer insPrintHistory(PrintHistory printHistory) {
         Integer integer = printHistoryMapper.insPrintHistory(printHistory);
-        Print print = printHistoryMapper.selPrintHistoryNum(printHistory.getPK_ORDER_B());
+        Print print = printHistoryMapper.selPrintHistoryNum(printHistory.getPK_ORDER_B(),printHistory.getSUPPLOTNUM());
         if (print.getHistoryNum()>=print.getNum()){
             printSheetMapper.modPrintSheetPrint(printHistory.getPK_ORDER_B());
             integer=201;
@@ -39,13 +39,13 @@ public class PrintHistoryServiceImpl implements PrintHistoryService {
     }
 
     @Override
-    public Print selPrintHistoryNum(String PK_ORDER_B) {
-        return printHistoryMapper.selPrintHistoryNum(PK_ORDER_B);
+    public Print selPrintHistoryNum(String PK_ORDER_B,String SUPPLOTNUM) {
+        return printHistoryMapper.selPrintHistoryNum(PK_ORDER_B,SUPPLOTNUM);
     }
 
     @Transactional
     @Override
-    public List<ShowPrintHistory> selPrintHistory(String PK_ORDER_B) {
-        return printHistoryMapper.selPrintHistory(PK_ORDER_B);
+    public List<ShowPrintHistory> selPrintHistory(String PK_ORDER_B,String SUPPLOTNUM) {
+        return printHistoryMapper.selPrintHistory(PK_ORDER_B,SUPPLOTNUM);
     }
 }

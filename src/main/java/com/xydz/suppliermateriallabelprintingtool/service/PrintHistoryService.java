@@ -15,9 +15,9 @@ public interface PrintHistoryService {
     Integer delPrintHistory(String PK_ORDER_B,String LOTNUM);
 
     //查询打印历史数量
-    Print selPrintHistoryNum(String PK_ORDER_B);
+    Print selPrintHistoryNum(String PK_ORDER_B,String SUPPLOTNUM);
 
     //查询对应的打印历史
-    List<ShowPrintHistory> selPrintHistory(String PK_ORDER_B);
+    List<ShowPrintHistory> selPrintHistory(String PK_ORDER_B,String SUPPLOTNUM);
 
 }

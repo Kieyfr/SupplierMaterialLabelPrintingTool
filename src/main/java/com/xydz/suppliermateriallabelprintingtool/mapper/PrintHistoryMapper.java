@@ -16,9 +16,9 @@ public interface PrintHistoryMapper {
     Integer delPrintHistory(@Param("PK_ORDER_B")String PK_ORDER_B,@Param("LOTNUM") String LOTNUM);
 
     //查询打印历史数量
-    Print selPrintHistoryNum(@Param("PK_ORDER_B") String PK_ORDER_B);
+    Print selPrintHistoryNum(@Param("PK_ORDER_B") String PK_ORDER_B,@Param("SUPPLOTNUM") String SUPPLOTNUM);
 
     //查询对应的打印历史
-    List<ShowPrintHistory> selPrintHistory(@Param("PK_ORDER_B") String PK_ORDER_B);
+    List<ShowPrintHistory> selPrintHistory(@Param("PK_ORDER_B") String PK_ORDER_B,@Param("SUPPLOTNUM") String SUPPLOTNUM);
 
 }
