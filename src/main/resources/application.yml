@@ -1,6 +1,6 @@
 #服务器端口配置
 server:
-  port: 8081
+  port: 18990
 
 #数据库连接配置
 spring:
