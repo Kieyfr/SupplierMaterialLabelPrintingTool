@@ -24,7 +24,7 @@
     </resultMap>
 
     <select id="selPrintSheetIfexist" resultMap="map">
-        select * from LPC_PRINTSHEET where PK_ORDER_B = #{pkOrderB}
+        select * from LPC_PRINTSHEET where PK_ORDER_B = #{pkOrderB} And SUPPLOTNUM=#{suppLotnum}
     </select>
 
     <insert id="insPrintSheet">

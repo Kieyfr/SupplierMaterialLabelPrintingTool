@@ -18,8 +18,8 @@ public class PrintSheetSerivceImpl implements PrintSheetSerivce {
 
     @Transactional
     @Override
-    public PrintSheet selPrintSheetIfexist(String pkOrderB) {
-        return printSheetMapper.selPrintSheetIfexist(pkOrderB);
+    public PrintSheet selPrintSheetIfexist(String pkOrderB,String suppLotnum) {
+        return printSheetMapper.selPrintSheetIfexist(pkOrderB,suppLotnum);
     }
 
     @Transactional

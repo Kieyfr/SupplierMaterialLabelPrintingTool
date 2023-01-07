@@ -10,7 +10,7 @@ import java.util.List;
 public interface PrintSheetMapper {
 
     //检查打印表是否有了该订单
-    PrintSheet selPrintSheetIfexist(@Param("pkOrderB")String pkOrderB);
+    PrintSheet selPrintSheetIfexist(@Param("pkOrderB")String pkOrderB,@Param("suppLotnum")String suppLotnum);
 
     //添加到打印表
     Integer insPrintSheet(PrintSheet printSheet);

@@ -10,7 +10,7 @@ import java.util.List;
 public interface PrintSheetSerivce  {
 
     //检查打印表是否有了该订单
-    PrintSheet selPrintSheetIfexist(String pkOrderB);
+    PrintSheet selPrintSheetIfexist(String pkOrderB,String suppLotnum);
 
     //添加到打印表
     Integer insPrintSheet(PrintSheet printSheet);

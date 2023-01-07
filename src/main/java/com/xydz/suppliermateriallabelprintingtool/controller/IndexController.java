@@ -139,15 +139,15 @@ public class IndexController {
     @RequestMapping("addPrintSheet")
     public ResponseData<Integer> addPrintSheet(PrintSheet printSheet){
         //检测单子是否存在
-//        if (printSheetSerivce.selPrintSheetIfexist(printSheet.getPK_ORDER_B())==null){
+        if (printSheetSerivce.selPrintSheetIfexist(printSheet.getPK_ORDER_B(),printSheet.getSUPPLOTNUM())==null){
             System.out.println(printSheet.getPRODUCEDATE());
             Integer status = printSheetSerivce.insPrintSheet(printSheet);
             if (status==1){
                 return new ResponseData<Integer>("200","添加成功",status);
             }
             return new ResponseData<Integer>("500","添加失败",null);
-//        }
-//        return new ResponseData<Integer>("403","订单重复",null);
+        }
+        return new ResponseData<Integer>("403","同一订单供应商批号不能重复",null);
     }
 
     /**
