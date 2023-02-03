@@ -48,11 +48,24 @@
     </insert>
 
     <select id="selPrintSheets" resultMap="map">
-        select * from LPC_PRINTSHEET where  SUPPCODE = #{suppCode} and PRINT = 1
+        select * from LPC_PRINTSHEET
+        <where>
+            PRINT = 1
+            <if test="suppCode!= null and suppCode!= ''">
+                AND SUPPCODE = #{suppCode}
+            </if>
+        </where>
+
     </select>
 
     <select id="selAllPrintSheets" resultMap="map">
-        select * from LPC_PRINTSHEET where  SUPPCODE = #{suppCode}
+        select * from LPC_PRINTSHEET
+        <where>
+            PRINT = 0
+            <if test="suppCode!= null and suppCode!= ''">
+                AND SUPPCODE = #{suppCode}
+            </if>
+        </where>
     </select>
 
     <select id="selIfPrintSheets" resultMap="map">

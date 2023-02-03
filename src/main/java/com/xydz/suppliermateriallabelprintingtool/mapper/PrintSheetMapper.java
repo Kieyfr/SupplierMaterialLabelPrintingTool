@@ -18,7 +18,7 @@ public interface PrintSheetMapper {
     //查询到供应商的未完成打印表
     List<PrintSheet> selPrintSheets(@Param("suppCode")String suppCode);
 
-    //查询到供应商的全部完成打印表
+    //查询到供应商的已完成订单
     List<PrintSheet> selAllPrintSheets(@Param("suppCode")String suppCode);
 
     //查询到供应商的打印表

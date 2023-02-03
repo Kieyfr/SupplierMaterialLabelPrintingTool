@@ -258,6 +258,7 @@ public class IndexController {
 //            }
 //        }
 //        System.out.println(selInfo);
+        System.out.println("SUPPCODE:"+selInfo.getSUPPCODE());
         List<PrintSheet> printSheets = printSheetSerivce.selIfPrintSheets(selInfo);
         if (printSheets!=null){
             return new ResponseData<List<PrintSheet>>("200","获取成功",printSheets);
