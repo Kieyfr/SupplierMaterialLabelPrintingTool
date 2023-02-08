@@ -1,5 +1,8 @@
 package com.xydz.suppliermateriallabelprintingtool.service.impl;
 
+
+
+
 import com.xydz.suppliermateriallabelprintingtool.entity.PrintSheet;
 import com.xydz.suppliermateriallabelprintingtool.entity.SelInfo;
 import com.xydz.suppliermateriallabelprintingtool.mapper.PrintSheetMapper;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,8 +22,8 @@ public class PrintSheetSerivceImpl implements PrintSheetSerivce {
 
     @Transactional
     @Override
-    public PrintSheet selPrintSheetIfexist(String pkOrderB,String suppLotnum) {
-        return printSheetMapper.selPrintSheetIfexist(pkOrderB,suppLotnum);
+    public PrintSheet selPrintSheetIfexist(String pkOrderB, String suppLotnum) {
+        return printSheetMapper.selPrintSheetIfexist(pkOrderB, suppLotnum);
     }
 
     @Transactional
@@ -41,7 +45,29 @@ public class PrintSheetSerivceImpl implements PrintSheetSerivce {
 
     @Override
     public List<PrintSheet> selIfPrintSheets(SelInfo selInfo) {
-        return printSheetMapper.selIfPrintSheets(selInfo);
+        if (selInfo.getPrint().equals("有")) {
+            List<PrintSheet> printSheets=printSheetMapper.selIfHavePrintSheets(selInfo);
+            return printSheets;
+        } else if (selInfo.getPrint().equals("无")) {
+            List<PrintSheet> printSheets=printSheetMapper.selIfNothingPrintSheets(selInfo);
+            return printSheets;
+        } else {
+            List<PrintSheet> printSheets = printSheetMapper.selIfAllPrintSheets(selInfo);
+            return printSheets;
+        }
+    }
+
+    @Override
+    public Integer getQueryPrintSheetsTotal(SelInfo selInfo) {
+        if (selInfo.getPrint().equals("有")) {
+            return printSheetMapper.getQueryHavePrintSheetsTotal(selInfo);
+        } else if (selInfo.getPrint().equals("无")) {
+            return printSheetMapper.getQueryNothingPrintSheetsTotal(selInfo);
+        } else {
+            Integer PrintSheetsTotal1 = printSheetMapper.getQueryHavePrintSheetsTotal(selInfo);
+            Integer PrintSheetsTotal2 = printSheetMapper.getQueryNothingPrintSheetsTotal(selInfo);
+            return PrintSheetsTotal1+PrintSheetsTotal2;
+        }
     }
 
     @Override

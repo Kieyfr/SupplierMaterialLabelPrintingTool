@@ -32,8 +32,12 @@ logging:
 #    FILE: org.apache.slf4j.DailyRollingFileAppender
 
 
-
-
+##分页插件
+#pagehelper:
+#  helper-dialect: oracle
+#  reasonable: true
+#  support-methods-arguments: true
+#  params: count=countSql
 
 
 

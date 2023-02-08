@@ -21,6 +21,7 @@
         <result property="GROSSWEIGHT" column="GROSSWEIGHT" jdbcType="DOUBLE"></result>
         <result property="NUM" column="NUM" jdbcType="DOUBLE"></result>
         <result property="PRINT" column="PRINT" jdbcType="BOOLEAN"></result>
+        <result property="DBILLDATE" column="DBILLDATE" jdbcType="VARCHAR"></result>
     </resultMap>
 
     <select id="selPrintSheetIfexist" resultMap="map">
@@ -68,11 +69,86 @@
         </where>
     </select>
 
-    <select id="selIfPrintSheets" resultMap="map">
-        select * from LPC_PRINTSHEET
+    <select id="selIfHavePrintSheets" resultMap="map">
+        select * from (
+
+        select ROWNUM r,p.* from
+        (select
+            c.PK_ORDER,l.PK_ORDER_B,l.VBILLCODE,
+            l.MATERCODE,l.MATERNAME,
+            l.MATERMATERIALSPEC,l.MATERMATERIALTYPE,l.NUM,decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE) DBILLDATE,
+            l.SUPPLOTNUM,l.SUPPCODE,l.SUPPNAME,
+            l.SUPPSHORTNAME,l.SUPPMATERCODE,l.NETWEIGHT,l.GROSSWEIGHT,l.PRODUCEDATE
+        from (select
+            a.PK_ORDER PK_ORDER,b.PK_ORDER_B PK_ORDER_B,a.VBILLCODE VBILLCODE,b.MATERCODE MATERCODE,
+            b.MATERNAME MATERNAME,b.MATERMATERIALSPEC MATERMATERIALSPEC,
+            b.MATERMATERIALTYPE MATERMATERIALTYPE,b.NUM NUM,a.DBILLDATE DBILLDATE,a.SUPPNAME SUPPNAME,a.SUPPCODE SUPPCODE
+            from ncc.view_xinya_po_order@DBLIK_PURCHASE a
+            join ncc.view_xinya_po_order_b@DBLIK_PURCHASE b
+            on a.PK_ORDER = b.PK_ORDER) c
+        right outer join LPC_PRINTSHEET l
+        ON c.PK_ORDER_B=l.PK_ORDER_B
         <where>
             <if test="SUPPCODE!=null and SUPPCODE!=''">
-                and SUPPCODE = #{SUPPCODE}
+                and l.SUPPCODE = #{SUPPCODE}
+            </if>
+            <if test="SUPPMATERCODE != null and SUPPMATERCODE!=''">
+                and l.SUPPMATERCODE like CONCAT(CONCAT('%',#{SUPPMATERCODE}),'%')
+            </if>
+            <if test="SUPPLOTNUM!=null and SUPPLOTNUM!=''">
+                and l.SUPPLOTNUM like CONCAT(CONCAT('%',#{SUPPLOTNUM}),'%')
+            </if>
+            <if test="VBILLCODE!=null and VBILLCODE!=''">
+                and l.VBILLCODE like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
+            </if>
+            <if test="STARTDATE!=null and STARTDATE!=''">
+                and TO_DATE(decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE),'yyyy-MM-dd') &gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')
+            </if>
+            <if test="ENDDATE!=null and ENDDATE!=''">
+                and TO_DATE(decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE),'yyyy-MM-dd') &lt; TO_DATE(#{ENDDATE},'yyyy-MM-dd')
+            </if>
+            <if test="COMPLETION=='已完成' ">
+                and l.PRINT = 0
+            </if>
+            <if test="COMPLETION=='未完成' ">
+                and l.PRINT = 1
+            </if>
+        </where>
+        Order by decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE)
+        ) p
+
+        )
+        WHERE r  BETWEEN  (#{current}-1)*(#{pageSize})+1 AND (#{current}*#{pageSize})
+
+    </select>
+
+    <select id="selIfNothingPrintSheets" resultMap="map">
+        select * from (
+
+        select ROWNUM r,p.* from
+
+
+        (select
+        c.PK_ORDER,c.PK_ORDER_B,c.VBILLCODE,
+        c.MATERCODE,c.MATERNAME,
+        c.MATERMATERIALSPEC,c.MATERMATERIALTYPE,c.NUM,decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE) DBILLDATE,c.SUPPNAME SUPPNAME,
+        l.SUPPLOTNUM,c.SUPPCODE,
+        (select SHORTNAME from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE d WHERE d.CODE=c.SUPPCODE and rownum=1)
+        SUPPSHORTNAME,
+        l.SUPPMATERCODE,l.NETWEIGHT,l.GROSSWEIGHT,l.PRODUCEDATE
+        from (select
+        a.PK_ORDER PK_ORDER,b.PK_ORDER_B PK_ORDER_B,a.VBILLCODE VBILLCODE,b.MATERCODE MATERCODE,
+        b.MATERNAME MATERNAME,b.MATERMATERIALSPEC MATERMATERIALSPEC,
+        b.MATERMATERIALTYPE MATERMATERIALTYPE,b.NUM NUM,a.DBILLDATE DBILLDATE,a.SUPPNAME SUPPNAME,a.SUPPCODE SUPPCODE
+        from ncc.view_xinya_po_order@DBLIK_PURCHASE a
+        join ncc.view_xinya_po_order_b@DBLIK_PURCHASE b
+        on a.PK_ORDER = b.PK_ORDER) c
+        left outer join  LPC_PRINTSHEET l
+        ON c.PK_ORDER_B=l.PK_ORDER_B
+        <where>
+            l.PK_ORDER is null
+            <if test="SUPPCODE!=null and SUPPCODE!=''">
+                and c.SUPPCODE = #{SUPPCODE}
             </if>
             <if test="SUPPMATERCODE != null and SUPPMATERCODE!=''">
                 and SUPPMATERCODE like CONCAT(CONCAT('%',#{SUPPMATERCODE}),'%')
@@ -83,17 +159,161 @@
             <if test="VBILLCODE!=null and VBILLCODE!=''">
                 and VBILLCODE like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
             </if>
-            <if test="STARTDATE!=null ">
-                and PRODUCEDATE &gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')
+            <if test="STARTDATE!=null and STARTDATE!=''">
+                and TO_DATE(c.DBILLDATE,'yyyy-MM-dd')&gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')
             </if>
-            <if test="ENDDATE!=null ">
-                and PRODUCEDATE &lt; TO_DATE(#{ENDDATE},'yyyy-MM-dd')
+            <if test="ENDDATE!=null and ENDDATE!=''">
+                and TO_DATE(c.DBILLDATE,'yyyy-MM-dd') &lt;= TO_DATE(#{ENDDATE},'yyyy-MM-dd')
             </if>
             <if test="COMPLETION=='已完成' ">
                 and PRINT = 0
             </if>
             <if test="COMPLETION=='未完成' ">
-                and PRINT = 1
+
+            </if>
+        </where>
+        Order by c.DBILLDATE desc
+        ) p
+
+        )
+        WHERE r  BETWEEN  (#{current}-1)*(#{pageSize})+1 AND (#{current}*#{pageSize})
+
+    </select>
+
+    <select id="selIfAllPrintSheets" resultMap="map">
+        select * from (
+        select ROWNUM r,p.* from
+
+
+        (select
+        decode(c.PK_ORDER, null, l.PK_ORDER, c.PK_ORDER) PK_ORDER,decode(c.PK_ORDER_B, null, l.PK_ORDER_B, c.PK_ORDER_B) PK_ORDER_B,
+        decode(c.VBILLCODE, null, l.VBILLCODE, c.VBILLCODE) VBILLCODE,decode(c.MATERCODE, null, l.MATERCODE, c.MATERCODE) MATERCODE,
+        decode(c.MATERNAME, null, l.MATERNAME, c.MATERNAME) MATERNAME,decode(c.MATERMATERIALSPEC, null, l.MATERMATERIALSPEC, c.MATERMATERIALSPEC) MATERMATERIALSPEC,
+        decode(c.MATERMATERIALTYPE, null, l.MATERMATERIALTYPE, c.MATERMATERIALTYPE) MATERMATERIALTYPE,decode(c.NUM, null, l.NUM, c.NUM) NUM,
+        decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE) DBILLDATE,decode(c.SUPPNAME, null, l.SUPPNAME, c.SUPPNAME) SUPPNAME,
+        l.SUPPLOTNUM,decode(c.SUPPCODE, null, l.SUPPCODE, c.SUPPCODE) SUPPCODE,
+        (select SHORTNAME from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE d WHERE d.CODE=decode(c.SUPPCODE, null, l.SUPPCODE, c.SUPPCODE) and rownum=1) SUPPSHORTNAME,
+        l.SUPPMATERCODE,l.NETWEIGHT,l.GROSSWEIGHT,l.PRODUCEDATE
+        from (select
+        a.PK_ORDER PK_ORDER,b.PK_ORDER_B PK_ORDER_B,a.VBILLCODE VBILLCODE,b.MATERCODE MATERCODE,
+        b.MATERNAME MATERNAME,b.MATERMATERIALSPEC MATERMATERIALSPEC,
+        b.MATERMATERIALTYPE MATERMATERIALTYPE,b.NUM NUM,a.DBILLDATE DBILLDATE,a.SUPPNAME SUPPNAME,a.SUPPCODE SUPPCODE
+        from ncc.view_xinya_po_order@DBLIK_PURCHASE a
+        join ncc.view_xinya_po_order_b@DBLIK_PURCHASE b
+        on a.PK_ORDER = b.PK_ORDER) c
+        full outer join LPC_PRINTSHEET l
+        ON c.PK_ORDER_B=l.PK_ORDER_B
+        <where>
+            <if test="SUPPCODE!=null and SUPPCODE!=''">
+                and decode(c.SUPPCODE, null, l.SUPPCODE, c.SUPPCODE) = #{SUPPCODE}
+            </if>
+            <if test="SUPPMATERCODE != null and SUPPMATERCODE!=''">
+                and decode(c.SUPPMATERCODE, null, l.SUPPMATERCODE, c.SUPPMATERCODE) like CONCAT(CONCAT('%',#{SUPPMATERCODE}),'%')
+            </if>
+            <if test="SUPPLOTNUM!=null and SUPPLOTNUM!=''">
+                and decode(c.SUPPLOTNUM, null, l.SUPPLOTNUM, c.SUPPLOTNUM) like CONCAT(CONCAT('%',#{SUPPLOTNUM}),'%')
+            </if>
+            <if test="VBILLCODE!=null and VBILLCODE!=''">
+                and decode(c.VBILLCODE, null, l.VBILLCODE, c.VBILLCODE) like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
+            </if>
+            <if test="STARTDATE!=null and STARTDATE!=''">
+                and TO_DATE(decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE),'yyyy-MM-dd')&gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')
+            </if>
+            <if test="ENDDATE!=null and ENDDATE!=''">
+                and TO_DATEdecode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE),'yyyy-MM-dd') &lt;= TO_DATE(#{ENDDATE},'yyyy-MM-dd')
+            </if>
+            <if test="COMPLETION=='已完成' ">
+                and PRINT = 0
+            </if>
+            <if test="COMPLETION=='未完成' ">
+
+            </if>
+        </where>
+        Order by decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE) desc
+        ) p
+
+        )
+        WHERE r  BETWEEN  (#{current}-1)*(#{pageSize})+1 AND (#{current}*#{pageSize})
+
+
+
+    </select>
+    <select id="getQueryHavePrintSheetsTotal" resultType="java.lang.Integer">
+        select
+            count(*)
+        from (select
+        a.PK_ORDER PK_ORDER,b.PK_ORDER_B PK_ORDER_B,a.VBILLCODE VBILLCODE,b.MATERCODE MATERCODE,
+        b.MATERNAME MATERNAME,b.MATERMATERIALSPEC MATERMATERIALSPEC,
+        b.MATERMATERIALTYPE MATERMATERIALTYPE,b.NUM NUM,a.DBILLDATE DBILLDATE,a.SUPPNAME SUPPNAME,a.SUPPCODE SUPPCODE
+        from ncc.view_xinya_po_order@DBLIK_PURCHASE a
+        join ncc.view_xinya_po_order_b@DBLIK_PURCHASE b
+        on a.PK_ORDER = b.PK_ORDER) c
+        right outer join LPC_PRINTSHEET l
+        ON c.PK_ORDER_B=l.PK_ORDER_B
+        <where>
+            <if test="SUPPCODE!=null and SUPPCODE!=''">
+                and l.SUPPCODE = #{SUPPCODE}
+            </if>
+            <if test="SUPPMATERCODE != null and SUPPMATERCODE!=''">
+                and l.SUPPMATERCODE like CONCAT(CONCAT('%',#{SUPPMATERCODE}),'%')
+            </if>
+            <if test="SUPPLOTNUM!=null and SUPPLOTNUM!=''">
+                and l.SUPPLOTNUM like CONCAT(CONCAT('%',#{SUPPLOTNUM}),'%')
+            </if>
+            <if test="VBILLCODE!=null and VBILLCODE!=''">
+                and l.VBILLCODE like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
+            </if>
+            <if test="STARTDATE!=null and STARTDATE!=''">
+                and TO_DATE(decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE),'yyyy-MM-dd') &gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')
+            </if>
+            <if test="ENDDATE!=null and ENDDATE!=''">
+                and TO_DATE(decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE),'yyyy-MM-dd') &lt;= TO_DATE(#{ENDDATE},'yyyy-MM-dd')
+            </if>
+            <if test="COMPLETION=='已完成' ">
+                and l.PRINT = 0
+            </if>
+            <if test="COMPLETION=='未完成' ">
+                and l.PRINT = 1
+            </if>
+        </where>
+    </select>
+    <select id="getQueryNothingPrintSheetsTotal" resultType="java.lang.Integer">
+        select
+        count((select SHORTNAME from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE d WHERE d.CODE=c.SUPPCODE and rownum &lt; 2))
+        from (select
+        b.PK_ORDER_B PK_ORDER_B,a.VBILLCODE VBILLCODE,b.MATERCODE MATERCODE,
+        b.MATERNAME MATERNAME,b.MATERMATERIALSPEC MATERMATERIALSPEC,
+        b.MATERMATERIALTYPE MATERMATERIALTYPE,a.DBILLDATE DBILLDATE,a.SUPPNAME SUPPNAME,a.SUPPCODE SUPPCODE
+        from ncc.view_xinya_po_order@DBLIK_PURCHASE a
+        join ncc.view_xinya_po_order_b@DBLIK_PURCHASE b
+        on a.PK_ORDER = b.PK_ORDER) c
+        left outer join LPC_PRINTSHEET l
+        ON c.PK_ORDER_B=l.PK_ORDER_B
+        <where>
+            l.PK_ORDER is null
+            <if test="SUPPCODE!=null and SUPPCODE!=''">
+                and c.SUPPCODE = #{SUPPCODE}
+            </if>
+            <if test="SUPPMATERCODE != null and SUPPMATERCODE!=''">
+                and SUPPMATERCODE like CONCAT(CONCAT('%',#{SUPPMATERCODE}),'%')
+            </if>
+            <if test="SUPPLOTNUM!=null and SUPPLOTNUM!=''">
+                and SUPPLOTNUM like CONCAT(CONCAT('%',#{SUPPLOTNUM}),'%')
+            </if>
+            <if test="VBILLCODE!=null and VBILLCODE!=''">
+                and VBILLCODE like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
+            </if>
+            <if test="STARTDATE!=null and STARTDATE!=''">
+                and TO_DATE(c.DBILLDATE,'yyyy-MM-dd')&gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')
+            </if>
+            <if test="ENDDATE!=null and ENDDATE!=''">
+                and TO_DATE(c.DBILLDATE,'yyyy-MM-dd') &lt;= TO_DATE(#{ENDDATE},'yyyy-MM-dd')
+            </if>
+            <if test="COMPLETION=='已完成' ">
+                and PRINT = 0
+            </if>
+            <if test="COMPLETION=='未完成' ">
+
             </if>
         </where>
     </select>

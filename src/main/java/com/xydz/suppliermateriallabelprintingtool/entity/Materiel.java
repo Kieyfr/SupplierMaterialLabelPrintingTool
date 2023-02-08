@@ -2,6 +2,8 @@ package com.xydz.suppliermateriallabelprintingtool.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @Author xiachenchen
  * @ClassName: Materiel
@@ -26,5 +28,7 @@ public class Materiel {
     private String MATERMATERIALTYPE;   //物料颜色
 
     private Double NUM;                 //订单数量
+
+    private String DBILLDATE;             //采购日期
 
 }

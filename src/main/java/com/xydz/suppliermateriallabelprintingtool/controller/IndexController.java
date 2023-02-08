@@ -1,5 +1,7 @@
 package com.xydz.suppliermateriallabelprintingtool.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xydz.suppliermateriallabelprintingtool.entity.*;
 import com.xydz.suppliermateriallabelprintingtool.service.MaterielService;
 import com.xydz.suppliermateriallabelprintingtool.service.PrintHistoryService;
@@ -7,12 +9,11 @@ import com.xydz.suppliermateriallabelprintingtool.service.PrintSheetSerivce;
 import com.xydz.suppliermateriallabelprintingtool.service.SuppUserService;
 import com.xydz.suppliermateriallabelprintingtool.util.LoginUtil;
 import com.xydz.suppliermateriallabelprintingtool.util.LotNumUtil;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,7 +61,6 @@ public class IndexController {
     public ResponseData<List<Materiel>> getMateriels(){
         String suppCode = LoginUtil.getLoginUser().getCODE();
         List<Materiel> materielList = materielService.selMateriel(suppCode);
-        List<PrintSheet> printSheets = printSheetSerivce.selAllPrintSheets(suppCode);
         if (materielList!=null){
 //            if (printSheets!=null){
 //                for(PrintSheet j : printSheets){
@@ -86,7 +86,6 @@ public class IndexController {
     public ResponseData<List<Materiel>> getMaterielsByCode(String suppCode){
 
         List<Materiel> materielList = materielService.selMateriel(suppCode);
-        List<PrintSheet> printSheets = printSheetSerivce.selAllPrintSheets(suppCode);
         if (materielList!=null){
 //            if (printSheets!=null){
 //                for(PrintSheet j : printSheets){
@@ -104,6 +103,32 @@ public class IndexController {
     }
 
     /**
+     * 根据物料编码获取物料信息列表
+     *
+     * @return materiel
+     */
+    @RequestMapping("getMateriel")
+    public ResponseData<Materiel> getMaterielsByCode(String suppCode,String materCode){
+        Materiel materiel = materielService.getMateriel(suppCode,materCode);
+        if (materiel!=null){
+//            if (printSheets!=null){
+//                for(PrintSheet j : printSheets){
+//                    for(Materiel i : materielList){
+//                        if (j.getPK_ORDER_B().equals(i.getPK_ORDER_B())){
+//                            materielList.remove(materielList.indexOf(i));
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+            return new ResponseData<Materiel>("200","获取成功",materiel);
+        }
+        return new ResponseData<Materiel>("404","物料列表为空",null);
+    }
+
+
+
+    /**
      * 查找物料信息列表
      *
      * @return materielList
@@ -113,7 +138,6 @@ public class IndexController {
                                                      @RequestParam("suppCode")String suppCode){
 
         List<Materiel> materielList = materielService.searchMateriels(suppCode,search);
-        List<PrintSheet> printSheets = printSheetSerivce.selAllPrintSheets(suppCode);
         if (materielList!=null){
 //            if (printSheets!=null){
 //                for(PrintSheet j : printSheets){
@@ -223,11 +247,26 @@ public class IndexController {
 //            }
 //        }
 //        System.out.println(selInfo);
-        List<PrintSheet> printSheets = printSheetSerivce.selIfPrintSheets(selInfo);
-        if (printSheets!=null){
-            return new ResponseData<List<PrintSheet>>("200","获取成功",printSheets);
-        }
+//        List<PrintSheet> printSheets = printSheetSerivce.selIfPrintSheets(page);
+//        if (printSheets!=null){
+//            return new ResponseData<List<PrintSheet>>("200","获取成功",printSheets);
+//        }
         return new ResponseData<List<PrintSheet>>("500","获取失败",null);
+    }
+
+    /**
+     * 根据条件查询打印物料数量
+     *
+     */
+    @PostMapping("getQueryPrintSheetsTotal")
+    public ResponseData<Integer> getQueryPageReports(SelInfo selInfo){
+        Integer total = printSheetSerivce.getQueryPrintSheetsTotal(selInfo);
+        if (total>0){
+            return new ResponseData<Integer>("200","获取数量",total);
+        }else {
+            return new ResponseData<Integer>("200","无数据",total);
+        }
+
     }
 
     /**
@@ -238,27 +277,10 @@ public class IndexController {
     @RequestMapping("getIfPrintSheetsByCode")
     public ResponseData<List<PrintSheet>> getIfPrintSheetsByCode(SelInfo selInfo){
 
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        if (selInfo.getSTARTDATE()!=null){
-//            Date parse = null;
-//            try {
-//                parse = simpleDateFormat.parse(simpleDateFormat.format(selInfo.getSTARTDATE()));
-//                selInfo.setSTARTDATE(parse);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        if (selInfo.getENDDATE()!=null){
-//            Date parse = null;
-//            try {
-//                parse = simpleDateFormat.parse(simpleDateFormat.format(selInfo.getENDDATE()));
-//                selInfo.setENDDATE(parse);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        System.out.println(selInfo);
-        System.out.println("SUPPCODE:"+selInfo.getSUPPCODE());
+
+        if (LoginUtil.getState()==1){
+            selInfo.setSUPPCODE(LoginUtil.getLoginUser().getCODE());
+        }
         List<PrintSheet> printSheets = printSheetSerivce.selIfPrintSheets(selInfo);
         if (printSheets!=null){
             return new ResponseData<List<PrintSheet>>("200","获取成功",printSheets);
@@ -332,11 +354,11 @@ public class IndexController {
      * @return suppUser
      */
     @RequestMapping("getSupplier")
-    public ResponseData<SuppUser> getSupplier(@RequestParam("suppCode")String suppCode){
-        SuppUser suppUser = suppUserService.selSuppUser(suppCode);
-        System.out.println(suppCode);
-        System.out.println(suppUser);
-        return new ResponseData<SuppUser>("200","获取成功",suppUser);
+    public ResponseData<Supplier> getSupplier(@RequestParam("suppCode")String suppCode){
+        Supplier supplier = suppUserService.selSupplier(suppCode);
+        return new ResponseData<Supplier>("200","获取成功",supplier);
     }
+
+
 
 }

@@ -11,6 +11,9 @@
     <select id="selSupp" resultType="com.xydz.suppliermateriallabelprintingtool.entity.SuppUser">
         select * from LPC_SUPPLIER where CODE = #{suppCode}
     </select>
+    <select id="selSupplier" resultType="com.xydz.suppliermateriallabelprintingtool.entity.Supplier">
+        select CODE SUPPCODE,NAME SUPPNAME,SHORTNAME SUPPSHORTNAME from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE where CODE =#{suppCode,jdbcType=VARCHAR}
+    </select>
     <insert id="insertSuppUser">
         insert into LPC_SUPPLIER values (#{CODE},#{NAME},#{SHORTNAME},#{PWD})
     </insert>

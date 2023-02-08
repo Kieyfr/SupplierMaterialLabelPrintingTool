@@ -1,6 +1,7 @@
 package com.xydz.suppliermateriallabelprintingtool.service.impl;
 
 import com.xydz.suppliermateriallabelprintingtool.entity.SuppUser;
+import com.xydz.suppliermateriallabelprintingtool.entity.Supplier;
 import com.xydz.suppliermateriallabelprintingtool.mapper.SuppUserMapper;
 import com.xydz.suppliermateriallabelprintingtool.service.SuppUserService;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,11 @@ public class SuppUserServiceImpl implements SuppUserService {
     @Override
     public SuppUser selSuppUser(String suppCode ){
         return userMapper.selSuppUser(suppCode);
+    }
+
+    @Override
+    public Supplier selSupplier(String suppCode) {
+        return userMapper.selSupplier(suppCode);
     }
 
     @Override

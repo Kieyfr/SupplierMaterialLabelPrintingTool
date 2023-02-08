@@ -1,5 +1,6 @@
 package com.xydz.suppliermateriallabelprintingtool.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -18,10 +19,15 @@ public class SelInfo {
 
     private String COMPLETION;          //是否完成
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date STARTDATE;             //起始日期
+    private String Print;               //是否有打印记录,1有，0无
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date ENDDATE;           //截止日期
+
+    private String STARTDATE;             //起始日期
+
+    private String ENDDATE;           //截止日期
+
+    private Integer pageSize;   //每页的数量
+
+    private Integer current;    //当前页码
 
 }

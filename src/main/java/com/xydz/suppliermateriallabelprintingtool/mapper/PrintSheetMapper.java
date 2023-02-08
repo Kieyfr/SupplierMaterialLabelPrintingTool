@@ -22,7 +22,16 @@ public interface PrintSheetMapper {
     List<PrintSheet> selAllPrintSheets(@Param("suppCode")String suppCode);
 
     //查询到供应商的打印表
-    List<PrintSheet> selIfPrintSheets(SelInfo selInfo);
+    List<PrintSheet> selIfHavePrintSheets(SelInfo selInfo);
+    List<PrintSheet> selIfNothingPrintSheets(SelInfo selInfo);
+
+    List<PrintSheet> selIfAllPrintSheets(SelInfo selInfo);
+
+    //查询到供应商的打印表数据数量
+
+    Integer getQueryHavePrintSheetsTotal(SelInfo selInfo);
+
+    Integer getQueryNothingPrintSheetsTotal(SelInfo selInfo);
 
     //修改供应商的打印表
     Integer modPrintSheet(PrintSheet printSheet);

@@ -13,6 +13,8 @@ public class PrintSheet {
 
     private String PK_ORDER_B;           //采购订单明细主键
 
+    private String DBILLDATE;            //数据库开票日期
+
     private String SUPPCODE;            //供应商代码
 
     private String SUPPNAME;            //供应商名称
