@@ -39,19 +39,21 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         // 如果是OPTIONS请求则结束
         if (HttpMethod.OPTIONS.toString().equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
-            System.out.println("OPTIONS");
+//            System.out.println("OPTIONS");
             return true;
         }
         String token = request.getHeader("accessToken");
         if (token == null){
-            throw new NoteException("请重新登录",10002);
+//            throw new NoteException("请重新登录",10002);
+            return false;
         }
         //验证token
         if (!JwtUtil.verify(token)){
-            throw new NoteException("请重新登录",10002);
+//            throw new NoteException("请重新登录",10002);
+            return false;
         }else {
             Integer state = JwtUtil.getState(token);
-            System.out.println(state);
+//            System.out.println(state);
             SuppUser suppUser = null;
             if (state == 0) {
 
@@ -70,7 +72,8 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
             }
 
             if (suppUser == null) {
-                throw new NoteException("请重新登录", 10002);
+//                throw new NoteException("请重新登录", 10002);
+                return false;
             }
             Login login=new Login();
             login.setState(state);

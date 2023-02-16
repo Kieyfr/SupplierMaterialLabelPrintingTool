@@ -25,6 +25,7 @@ logging:
     path: log/
   level:
     com.xydz.suppliermateriallabelprintingtool.mapper: debug
+    root: warn
 
 
 #slf4j:

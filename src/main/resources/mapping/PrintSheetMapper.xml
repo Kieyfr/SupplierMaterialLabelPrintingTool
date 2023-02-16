@@ -157,7 +157,7 @@
                 and SUPPLOTNUM like CONCAT(CONCAT('%',#{SUPPLOTNUM}),'%')
             </if>
             <if test="VBILLCODE!=null and VBILLCODE!=''">
-                and VBILLCODE like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
+                and c.VBILLCODE like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
             </if>
             <if test="STARTDATE!=null and STARTDATE!=''">
                 and TO_DATE(c.DBILLDATE,'yyyy-MM-dd')&gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')
@@ -208,10 +208,10 @@
                 and decode(c.SUPPCODE, null, l.SUPPCODE, c.SUPPCODE) = #{SUPPCODE}
             </if>
             <if test="SUPPMATERCODE != null and SUPPMATERCODE!=''">
-                and decode(c.SUPPMATERCODE, null, l.SUPPMATERCODE, c.SUPPMATERCODE) like CONCAT(CONCAT('%',#{SUPPMATERCODE}),'%')
+                and l.SUPPMATERCODE like CONCAT(CONCAT('%',#{SUPPMATERCODE}),'%')
             </if>
             <if test="SUPPLOTNUM!=null and SUPPLOTNUM!=''">
-                and decode(c.SUPPLOTNUM, null, l.SUPPLOTNUM, c.SUPPLOTNUM) like CONCAT(CONCAT('%',#{SUPPLOTNUM}),'%')
+                and l.SUPPLOTNUM like CONCAT(CONCAT('%',#{SUPPLOTNUM}),'%')
             </if>
             <if test="VBILLCODE!=null and VBILLCODE!=''">
                 and decode(c.VBILLCODE, null, l.VBILLCODE, c.VBILLCODE) like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
@@ -220,7 +220,7 @@
                 and TO_DATE(decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE),'yyyy-MM-dd')&gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')
             </if>
             <if test="ENDDATE!=null and ENDDATE!=''">
-                and TO_DATEdecode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE),'yyyy-MM-dd') &lt;= TO_DATE(#{ENDDATE},'yyyy-MM-dd')
+                and TO_DATE(decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE),'yyyy-MM-dd') &lt;= TO_DATE(#{ENDDATE},'yyyy-MM-dd')
             </if>
             <if test="COMPLETION=='已完成' ">
                 and PRINT = 0
@@ -301,7 +301,7 @@
                 and SUPPLOTNUM like CONCAT(CONCAT('%',#{SUPPLOTNUM}),'%')
             </if>
             <if test="VBILLCODE!=null and VBILLCODE!=''">
-                and VBILLCODE like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
+                and c.VBILLCODE like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
             </if>
             <if test="STARTDATE!=null and STARTDATE!=''">
                 and TO_DATE(c.DBILLDATE,'yyyy-MM-dd')&gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')

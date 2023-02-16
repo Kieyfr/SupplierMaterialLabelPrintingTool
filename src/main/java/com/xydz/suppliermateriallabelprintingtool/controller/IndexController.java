@@ -161,7 +161,7 @@ public class IndexController {
      * @return status
      */
     @RequestMapping("addPrintSheet")
-    public ResponseData<Integer> addPrintSheet(PrintSheet printSheet){
+    public synchronized  ResponseData<Integer> addPrintSheet(PrintSheet printSheet){
         //检测单子是否存在
         if (printSheetSerivce.selPrintSheetIfexist(printSheet.getPK_ORDER_B(),printSheet.getSUPPLOTNUM())==null){
             System.out.println(printSheet.getPRODUCEDATE());
@@ -304,8 +304,9 @@ public class IndexController {
             LotNumUtil.numAdd(printHistory.getPK_ORDER_B());
             return new ResponseData<String>("200","添加成功",lotNum);
         }else  if (status==201){
+            String lotNum = LotNumUtil.getLotNum(printHistory.getPK_ORDER_B());
             LotNumUtil.numAdd(printHistory.getPK_ORDER_B());
-            return new ResponseData<String>("201","订单完成",null);
+            return new ResponseData<String>("201","订单完成",lotNum);
         }
         return new ResponseData<String>("500","添加失败",null);
     }
