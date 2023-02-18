@@ -45,7 +45,7 @@ public class IndexController {
     @RequestMapping("getLotNum")
     public ResponseData<String> getLotNum(@RequestParam("PK_ORDER_B")String PK_ORDER_B){
         String lotNum = LotNumUtil.getLotNum(PK_ORDER_B);
-        System.out.println("批号是"+lotNum);
+//        System.out.println("批号是"+lotNum);
         if (lotNum!=null){
             return new ResponseData<String>("200","获取成功",lotNum);
         }

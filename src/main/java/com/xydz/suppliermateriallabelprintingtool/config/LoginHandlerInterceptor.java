@@ -45,11 +45,13 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         String token = request.getHeader("accessToken");
         if (token == null){
 //            throw new NoteException("请重新登录",10002);
+            System.out.println("请重新登录");
             return false;
         }
         //验证token
         if (!JwtUtil.verify(token)){
 //            throw new NoteException("请重新登录",10002);
+            System.out.println("签名被篡改或已过期");
             return false;
         }else {
             Integer state = JwtUtil.getState(token);

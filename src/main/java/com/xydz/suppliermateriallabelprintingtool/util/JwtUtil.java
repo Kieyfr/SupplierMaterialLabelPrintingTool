@@ -24,6 +24,7 @@ public class JwtUtil {
      * 过期时间
      */
     private static final long EXPIRE_TIME = 3 * 24 * 60 * 60 * 1000;
+//    private static final long EXPIRE_TIME = 10 * 1000;
 
     private static final String TOKEN_SECRET = "8808e1e79b9241aba038e16553bd1836";
 
@@ -50,6 +51,7 @@ public class JwtUtil {
                     .withClaim("STATE",state+"")
 //                    .withExpiresAt(date)
                     .withIssuedAt(new Date())
+                    .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRE_TIME))
                     .sign(algorithm);
         } catch (UnsupportedEncodingException e) {
             return null;
