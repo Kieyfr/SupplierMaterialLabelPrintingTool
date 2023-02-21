@@ -43,11 +43,11 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
             return true;
         }
         String token = request.getHeader("accessToken");
-        if (token == null){
-//            throw new NoteException("请重新登录",10002);
-            System.out.println("请重新登录");
-            return false;
-        }
+//        if (token == null){
+////            throw new NoteException("请重新登录",10002);
+//            System.out.println("请重新登录");
+//            return false;
+//        }
         //验证token
         if (!JwtUtil.verify(token)){
 //            throw new NoteException("请重新登录",10002);
@@ -75,6 +75,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
 
             if (suppUser == null) {
 //                throw new NoteException("请重新登录", 10002);
+                request.setAttribute("msg","没有权限,请先登录");
                 return false;
             }
             Login login=new Login();

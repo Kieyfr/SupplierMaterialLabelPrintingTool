@@ -3,6 +3,7 @@ package com.xydz.suppliermateriallabelprintingtool.service;
 import com.xydz.suppliermateriallabelprintingtool.entity.Print;
 import com.xydz.suppliermateriallabelprintingtool.entity.PrintHistory;
 import com.xydz.suppliermateriallabelprintingtool.entity.ShowPrintHistory;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,5 +20,9 @@ public interface PrintHistoryService {
 
     //查询对应的打印历史
     List<ShowPrintHistory> selPrintHistory(String PK_ORDER_B,String SUPPLOTNUM);
+
+
+    //获取最大的订单批号
+    String selMaxLOTNUM(String PK_ORDER_B);
 
 }

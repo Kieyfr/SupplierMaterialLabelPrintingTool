@@ -40,6 +40,11 @@
         select count(*) HistoryNum,max(lps.num) Num from LPC_PRINTHISTORY lph join LPC_PRINTSHEET lps ON lph.pk_order_b = lps.pk_order_b where lps.PK_ORDER_B = #{PK_ORDER_B} And lph.SUPPLOTNUM=#{SUPPLOTNUM} And lps.SUPPLOTNUM=#{SUPPLOTNUM}
     </select>
 
+    <select id="selMaxLOTNUM" resultType="java.lang.String">
+        select max(lph.LOTNUM) from LPC_PRINTHISTORY lph join LPC_PRINTSHEET lps
+        ON lph.pk_order_b = lps.pk_order_b where lps.PK_ORDER_B = #{PK_ORDER_B}
+    </select>
+
     <select id="selPrintHistory" resultMap="showMap">
         select lph.PK_ORDER,lph.PK_ORDER_B,MATERNAME,SUPPMATERCODE,lph.PRODUCEDATE,LOTNUM,lph.NETWEIGHT,lph.GROSSWEIGHT,lph.SUPPLOTNUM,MATERMATERIALSPEC,MATERMATERIALTYPE,lph.PRINTDATE,lph.PALLET from LPC_PRINTHISTORY lph join LPC_PRINTSHEET lps ON lph.pk_order_b = lps.pk_order_b  where lps.PK_ORDER_B = #{PK_ORDER_B} And lph.SUPPLOTNUM=#{SUPPLOTNUM} And lps.SUPPLOTNUM=#{SUPPLOTNUM}
     </select>

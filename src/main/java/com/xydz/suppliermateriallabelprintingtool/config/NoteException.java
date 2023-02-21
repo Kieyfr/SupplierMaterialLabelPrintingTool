@@ -34,4 +34,6 @@ public class NoteException extends RuntimeException {
     public int getCode() {
         return code;
     }
+
+
 }

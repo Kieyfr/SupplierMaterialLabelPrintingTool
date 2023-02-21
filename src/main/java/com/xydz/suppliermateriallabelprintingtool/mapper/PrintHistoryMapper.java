@@ -21,4 +21,8 @@ public interface PrintHistoryMapper {
     //查询对应的打印历史
     List<ShowPrintHistory> selPrintHistory(@Param("PK_ORDER_B") String PK_ORDER_B,@Param("SUPPLOTNUM") String SUPPLOTNUM);
 
+
+    //获取当前订单最大的批号
+    String selMaxLOTNUM(@Param("PK_ORDER_B")String PK_ORDER_B);
+
 }

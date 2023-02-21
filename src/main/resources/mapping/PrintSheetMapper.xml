@@ -37,7 +37,7 @@
         <if test="MATERMATERIALTYPE!=null">
             MATERMATERIALTYPE,
         </if>
-        PRODUCEDATE,NETWEIGHT,GROSSWEIGHT,NUM,PRINT)
+        PRODUCEDATE,NETWEIGHT,GROSSWEIGHT,NUM,PRINT,DBILLDATE)
         values (#{PK_ORDER},#{PK_ORDER_B},#{SUPPCODE},#{SUPPNAME},#{SUPPSHORTNAME},#{SUPPMATERCODE},#{SUPPLOTNUM},#{VBILLCODE},#{MATERCODE},#{MATERNAME},
         <if test="MATERMATERIALSPEC!=null">
             #{MATERMATERIALSPEC},
@@ -45,7 +45,7 @@
         <if test="MATERMATERIALTYPE!=null">
             #{MATERMATERIALTYPE},
         </if>
-            #{PRODUCEDATE},#{NETWEIGHT},#{GROSSWEIGHT},#{NUM},#{PRINT})
+            #{PRODUCEDATE},#{NETWEIGHT},#{GROSSWEIGHT},#{NUM},#{PRINT},#{DBILLDATE})
     </insert>
 
     <select id="selPrintSheets" resultMap="map">
