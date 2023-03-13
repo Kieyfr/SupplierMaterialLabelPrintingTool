@@ -5,6 +5,7 @@ import com.xydz.suppliermateriallabelprintingtool.entity.PrintHistory;
 import com.xydz.suppliermateriallabelprintingtool.entity.ShowPrintHistory;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PrintHistoryMapper {
@@ -23,6 +24,6 @@ public interface PrintHistoryMapper {
 
 
     //获取当前订单最大的批号
-    String selMaxLOTNUM(@Param("PK_ORDER_B")String PK_ORDER_B);
+    String selMaxLOTNUM(@Param("PK_ORDER_B")String PK_ORDER_B,@Param("PRINTDATE")Date PRINTDATE);
 
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -51,7 +52,7 @@ public class PrintHistoryServiceImpl implements PrintHistoryService {
     }
 
     @Override
-    public String selMaxLOTNUM(String PK_ORDER_B) {
-        return printHistoryMapper.selMaxLOTNUM(PK_ORDER_B);
+    public String selMaxLOTNUM(String PK_ORDER_B, Date PRINTDATE) {
+        return printHistoryMapper.selMaxLOTNUM(PK_ORDER_B,PRINTDATE);
     }
 }

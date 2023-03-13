@@ -9,6 +9,7 @@ import com.xydz.suppliermateriallabelprintingtool.service.PrintSheetSerivce;
 import com.xydz.suppliermateriallabelprintingtool.service.SuppUserService;
 import com.xydz.suppliermateriallabelprintingtool.util.LoginUtil;
 import com.xydz.suppliermateriallabelprintingtool.util.LotNumUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -37,6 +38,8 @@ public class IndexController {
     @Resource
     private PrintHistoryService printHistoryService;
 
+    @Autowired
+    private LotNumUtil lotNumUtil;
     /**
      * 获取批号
      *
@@ -44,7 +47,7 @@ public class IndexController {
      */
     @RequestMapping("getLotNum")
     public ResponseData<String> getLotNum(@RequestParam("PK_ORDER_B")String PK_ORDER_B){
-        String lotNum = LotNumUtil.getLotNum(PK_ORDER_B);
+        String lotNum = lotNumUtil.getLotNum(PK_ORDER_B);
 //        System.out.println("批号是"+lotNum);
         if (lotNum!=null){
             return new ResponseData<String>("200","获取成功",lotNum);
@@ -164,7 +167,7 @@ public class IndexController {
     public synchronized  ResponseData<Integer> addPrintSheet(PrintSheet printSheet){
         //检测单子是否存在
         if (printSheetSerivce.selPrintSheetIfexist(printSheet.getPK_ORDER_B(),printSheet.getSUPPLOTNUM())==null){
-            System.out.println(printSheet.getPRODUCEDATE());
+//            System.out.println(printSheet);
             Integer status = printSheetSerivce.insPrintSheet(printSheet);
             if (status==1){
                 return new ResponseData<Integer>("200","添加成功",status);
@@ -226,7 +229,7 @@ public class IndexController {
     @RequestMapping("getIfPrintSheets")
     public ResponseData<List<PrintSheet>> getIfPrintSheets(SelInfo selInfo){
         selInfo.setSUPPCODE(LoginUtil.getLoginUser().getCODE());
-        System.out.println(selInfo);
+//        System.out.println(selInfo);
 //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //        if (selInfo.getSTARTDATE()!=null){
 //            Date parse = null;
@@ -296,16 +299,16 @@ public class IndexController {
      */
     @RequestMapping("addPrintHistory")
     public synchronized ResponseData<String> addPrintHistory(PrintHistory printHistory){
-        System.out.println(printHistory.getPRINTDATE());
-        printHistory.setLOTNUM(LotNumUtil.getLotNum(printHistory.getPK_ORDER_B()));
+//        System.out.println(printHistory.getPRINTDATE());
+        printHistory.setLOTNUM(lotNumUtil.getLotNum(printHistory.getPK_ORDER_B()));
         Integer status = printHistoryService.insPrintHistory(printHistory);
         if (status==1){
-            String lotNum = LotNumUtil.getLotNum(printHistory.getPK_ORDER_B());
-            LotNumUtil.numAdd(printHistory.getPK_ORDER_B());
+            String lotNum = lotNumUtil.getLotNum(printHistory.getPK_ORDER_B());
+            lotNumUtil.numAdd(printHistory.getPK_ORDER_B());
             return new ResponseData<String>("200","添加成功",lotNum);
         }else  if (status==201){
-            String lotNum = LotNumUtil.getLotNum(printHistory.getPK_ORDER_B());
-            LotNumUtil.numAdd(printHistory.getPK_ORDER_B());
+            String lotNum = lotNumUtil.getLotNum(printHistory.getPK_ORDER_B());
+            lotNumUtil.numAdd(printHistory.getPK_ORDER_B());
             return new ResponseData<String>("201","订单完成",lotNum);
         }
         return new ResponseData<String>("500","添加失败",null);
@@ -333,7 +336,7 @@ public class IndexController {
     @RequestMapping("selPrintHistory")
     public ResponseData<List<ShowPrintHistory> > selPrintHistory(SelPrintHistory selPrintHistory){
         List<ShowPrintHistory> showPrintHistoryList = printHistoryService.selPrintHistory(selPrintHistory.getPK_ORDER_B(),selPrintHistory.getSUPPLOTNUM());
-        System.out.println(selPrintHistory.getSUPPLOTNUM());
+//        System.out.println(selPrintHistory.getSUPPLOTNUM());
         return new ResponseData<List<ShowPrintHistory> >("200","获取成功",showPrintHistoryList);
     }
 

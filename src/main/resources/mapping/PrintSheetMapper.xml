@@ -74,20 +74,12 @@
 
         select ROWNUM r,p.* from
         (select
-            c.PK_ORDER,l.PK_ORDER_B,l.VBILLCODE,
+            l.PK_ORDER,l.PK_ORDER_B,l.VBILLCODE,
             l.MATERCODE,l.MATERNAME,
-            l.MATERMATERIALSPEC,l.MATERMATERIALTYPE,l.NUM,decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE) DBILLDATE,
+            l.MATERMATERIALSPEC,l.MATERMATERIALTYPE,l.NUM,l.DBILLDATE,
             l.SUPPLOTNUM,l.SUPPCODE,l.SUPPNAME,
             l.SUPPSHORTNAME,l.SUPPMATERCODE,l.NETWEIGHT,l.GROSSWEIGHT,l.PRODUCEDATE
-        from (select
-            a.PK_ORDER PK_ORDER,b.PK_ORDER_B PK_ORDER_B,a.VBILLCODE VBILLCODE,b.MATERCODE MATERCODE,
-            b.MATERNAME MATERNAME,b.MATERMATERIALSPEC MATERMATERIALSPEC,
-            b.MATERMATERIALTYPE MATERMATERIALTYPE,b.NUM NUM,a.DBILLDATE DBILLDATE,a.SUPPNAME SUPPNAME,a.SUPPCODE SUPPCODE
-            from ncc.view_xinya_po_order@DBLIK_PURCHASE a
-            join ncc.view_xinya_po_order_b@DBLIK_PURCHASE b
-            on a.PK_ORDER = b.PK_ORDER) c
-        right outer join LPC_PRINTSHEET l
-        ON c.PK_ORDER_B=l.PK_ORDER_B
+        from  LPC_PRINTSHEET l
         <where>
             <if test="SUPPCODE!=null and SUPPCODE!=''">
                 and l.SUPPCODE = #{SUPPCODE}
@@ -102,10 +94,10 @@
                 and l.VBILLCODE like CONCAT(CONCAT('%',#{VBILLCODE}),'%')
             </if>
             <if test="STARTDATE!=null and STARTDATE!=''">
-                and TO_DATE(decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE),'yyyy-MM-dd') &gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')
+                and TO_DATE(l.DBILLDATE,'yyyy-MM-dd') &gt;= TO_DATE(#{STARTDATE},'yyyy-MM-dd')
             </if>
             <if test="ENDDATE!=null and ENDDATE!=''">
-                and TO_DATE(decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE),'yyyy-MM-dd') &lt; TO_DATE(#{ENDDATE},'yyyy-MM-dd')
+                and TO_DATE(l.DBILLDATE,'yyyy-MM-dd') &lt; TO_DATE(#{ENDDATE},'yyyy-MM-dd')
             </if>
             <if test="COMPLETION=='已完成' ">
                 and l.PRINT = 0
@@ -114,7 +106,7 @@
                 and l.PRINT = 1
             </if>
         </where>
-        Order by decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE)
+        Order by l.DBILLDATE
         ) p
 
         )

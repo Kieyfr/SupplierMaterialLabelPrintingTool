@@ -42,7 +42,7 @@
 
     <select id="selMaxLOTNUM" resultType="java.lang.String">
         select max(lph.LOTNUM) from LPC_PRINTHISTORY lph join LPC_PRINTSHEET lps
-        ON lph.pk_order_b = lps.pk_order_b where lps.PK_ORDER_B = #{PK_ORDER_B}
+        ON lph.pk_order_b = lps.pk_order_b where lps.PK_ORDER_B = #{PK_ORDER_B} and lph.PRINTDATE=#{PRINTDATE}
     </select>
 
     <select id="selPrintHistory" resultMap="showMap">
