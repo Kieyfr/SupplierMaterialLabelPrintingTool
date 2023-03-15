@@ -106,7 +106,7 @@
                 and l.PRINT = 1
             </if>
         </where>
-        Order by l.DBILLDATE
+        Order by l.DBILLDATE desc
         ) p
 
         )
