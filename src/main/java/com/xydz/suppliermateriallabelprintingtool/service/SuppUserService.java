@@ -2,6 +2,7 @@ package com.xydz.suppliermateriallabelprintingtool.service;
 
 import com.xydz.suppliermateriallabelprintingtool.entity.SuppUser;
 import com.xydz.suppliermateriallabelprintingtool.entity.Supplier;
+import com.xydz.suppliermateriallabelprintingtool.entity.SupplierVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,5 +23,18 @@ public interface SuppUserService {
 
     //添加供应商到供应商用户表
     int insertSuppUser(SuppUser suppUser);
+
+    //获取所有供应商信息数量
+    Integer selSupplierVOTotal(String SUPPCODE, String SUPPNAME,
+                               String SUPPSHORTNAME,Integer loginRecordSUPPCODE);
+
+    //获取所有供应商信息
+    List<SupplierVO> selSupplierVO(String SUPPCODE, String SUPPNAME,
+                                   String SUPPSHORTNAME, Integer loginRecordSUPPCODE,
+                                   Integer current, Integer pageSize);
+
+    int delSuppUser(String suppCode);
+
+    int updateSuppUserPWD(String suppCode,String PWD);
 
 }

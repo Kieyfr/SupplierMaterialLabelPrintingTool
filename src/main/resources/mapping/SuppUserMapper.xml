@@ -2,19 +2,89 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.xydz.suppliermateriallabelprintingtool.mapper.SuppUserMapper">
+    <update id="updateSuppUserPWD">
+        update LPC_SUPPLIER
+        SET PWD=#{PWD}
+        WHERE CODE = #{suppCode}
+    </update>
+    <delete id="delSuppUser">
+        delete
+        FROM LPC_SUPPLIER
+        WHERE CODE = #{suppCode}
+    </delete>
     <select id="selSuppUser" resultType="com.xydz.suppliermateriallabelprintingtool.entity.SuppUser">
-        select CODE,NAME,SHORTNAME from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE where CODE =#{suppCode,jdbcType=VARCHAR}
+        select CODE, NAME, SHORTNAME
+        from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE
+        where CODE = #{suppCode,jdbcType=VARCHAR}
     </select>
     <select id="adminSelSuppUser" resultType="com.xydz.suppliermateriallabelprintingtool.entity.SuppUser">
-        select distinct(CODE),NAME,SHORTNAME from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE
+        select distinct(CODE), NAME, SHORTNAME
+        from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE
     </select>
     <select id="selSupp" resultType="com.xydz.suppliermateriallabelprintingtool.entity.SuppUser">
-        select * from LPC_SUPPLIER where CODE = #{suppCode}
+        select *
+        from LPC_SUPPLIER
+        where CODE = #{suppCode}
     </select>
     <select id="selSupplier" resultType="com.xydz.suppliermateriallabelprintingtool.entity.Supplier">
-        select CODE SUPPCODE,NAME SUPPNAME,SHORTNAME SUPPSHORTNAME from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE where CODE =#{suppCode,jdbcType=VARCHAR}
+        select CODE SUPPCODE, NAME SUPPNAME, SHORTNAME SUPPSHORTNAME
+        from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE
+        where CODE = #{suppCode,jdbcType=VARCHAR}
+    </select>
+    <select id="selSupplierVO" resultType="com.xydz.suppliermateriallabelprintingtool.entity.SupplierVO">
+        select * from (
+        select ROWNUM r,p.* from
+        (select distinct(s.CODE) SUPPCODE,s.NAME SUPPNAME,s.SHORTNAME SUPPSHORTNAME,l.CODE loginRecordSUPPCODE
+        from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE s
+        left join LPC_SUPPLIER l
+        ON s.CODE=l.CODE
+        <where>
+            <if test="SUPPCODE!='' and SUPPCODE!=null">
+                AND s.CODE LIKE CONCAT(CONCAT('%',#{SUPPCODE}),'%')
+            </if>
+            <if test="SUPPNAME!='' and SUPPNAME!=null">
+                AND s.NAME LIKE CONCAT(CONCAT('%',#{SUPPNAME}),'%')
+            </if>
+            <if test="SUPPSHORTNAME!='' and SUPPSHORTNAME!=null">
+                AND s.SHORTNAME LIKE CONCAT(CONCAT('%',#{SUPPSHORTNAME}),'%')
+            </if>
+            <if test="loginRecordSUPPCODE==0">
+                AND l.CODE is Null
+            </if>
+            <if test="loginRecordSUPPCODE==1">
+                AND l.CODE is NOT Null
+            </if>
+        </where>
+        ORDER BY s.CODE
+        ) p
+        )
+        WHERE r BETWEEN (#{current}-1)*(#{pageSize})+1 AND (#{current}*#{pageSize})
+    </select>
+    <select id="selSupplierVOTotal" resultType="java.lang.Integer">
+        select count(distinct s.CODE)
+        from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE s
+        left join LPC_SUPPLIER l
+        ON s.CODE=l.CODE
+        <where>
+            <if test="SUPPCODE!='' and SUPPCODE!=null">
+                AND s.CODE LIKE CONCAT(CONCAT('%',#{SUPPCODE}),'%')
+            </if>
+            <if test="SUPPNAME!='' and SUPPNAME!=null">
+                AND s.NAME LIKE CONCAT(CONCAT('%',#{SUPPNAME}),'%')
+            </if>
+            <if test="SUPPSHORTNAME!='' and SUPPSHORTNAME!=null">
+                AND s.SHORTNAME LIKE CONCAT(CONCAT('%',#{SUPPSHORTNAME}),'%')
+            </if>
+            <if test="loginRecordSUPPCODE==0">
+                AND l.CODE is Null
+            </if>
+            <if test="loginRecordSUPPCODE==1">
+                AND l.CODE is NOT Null
+            </if>
+        </where>
     </select>
     <insert id="insertSuppUser">
-        insert into LPC_SUPPLIER values (#{CODE},#{NAME},#{SHORTNAME},#{PWD})
+        insert into LPC_SUPPLIER
+        values (#{CODE}, #{NAME}, #{SHORTNAME}, #{PWD})
     </insert>
 </mapper>
