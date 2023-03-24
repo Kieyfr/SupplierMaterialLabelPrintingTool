@@ -1,12 +1,13 @@
 package com.xydz.suppliermateriallabelprintingtool.service.impl;
 
 
-
-
+import com.xydz.suppliermateriallabelprintingtool.entity.Print;
 import com.xydz.suppliermateriallabelprintingtool.entity.PrintSheet;
 import com.xydz.suppliermateriallabelprintingtool.entity.SelInfo;
+import com.xydz.suppliermateriallabelprintingtool.mapper.PrintHistoryMapper;
 import com.xydz.suppliermateriallabelprintingtool.mapper.PrintSheetMapper;
 import com.xydz.suppliermateriallabelprintingtool.service.PrintSheetSerivce;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,9 @@ public class PrintSheetSerivceImpl implements PrintSheetSerivce {
 
     @Resource
     private PrintSheetMapper printSheetMapper;
+
+    @Resource
+    private PrintHistoryMapper printHistoryMapper;
 
     @Transactional
     @Override
@@ -46,10 +50,10 @@ public class PrintSheetSerivceImpl implements PrintSheetSerivce {
     @Override
     public List<PrintSheet> selIfPrintSheets(SelInfo selInfo) {
         if (selInfo.getPrint().equals("有")) {
-            List<PrintSheet> printSheets=printSheetMapper.selIfHavePrintSheets(selInfo);
+            List<PrintSheet> printSheets = printSheetMapper.selIfHavePrintSheets(selInfo);
             return printSheets;
         } else if (selInfo.getPrint().equals("无")) {
-            List<PrintSheet> printSheets=printSheetMapper.selIfNothingPrintSheets(selInfo);
+            List<PrintSheet> printSheets = printSheetMapper.selIfNothingPrintSheets(selInfo);
             return printSheets;
         } else {
             List<PrintSheet> printSheets = printSheetMapper.selIfAllPrintSheets(selInfo);
@@ -66,7 +70,7 @@ public class PrintSheetSerivceImpl implements PrintSheetSerivce {
         } else {
             Integer PrintSheetsTotal1 = printSheetMapper.getQueryHavePrintSheetsTotal(selInfo);
             Integer PrintSheetsTotal2 = printSheetMapper.getQueryNothingPrintSheetsTotal(selInfo);
-            return PrintSheetsTotal1+PrintSheetsTotal2;
+            return PrintSheetsTotal1 + PrintSheetsTotal2;
         }
     }
 
@@ -79,4 +83,23 @@ public class PrintSheetSerivceImpl implements PrintSheetSerivce {
     public Integer modPrintSheetPrint(String PK_ORDER_B) {
         return printSheetMapper.modPrintSheetPrint(PK_ORDER_B);
     }
+
+
+    @Override
+    @Transactional
+    public int delPrintSheet(String PK_ORDER_B, String SUPPLOTNUM) {
+        Integer integer = printHistoryMapper.selectPrintHistoryNum(PK_ORDER_B, SUPPLOTNUM);
+        int a = printSheetMapper.delPrintSheet(PK_ORDER_B, SUPPLOTNUM);
+        if (integer > 0) {
+            int b = printHistoryMapper.delAllPrintHistory(PK_ORDER_B, SUPPLOTNUM);
+            if (a > 0 && b > 0) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else {
+            return a;
+        }
+    }
+
 }

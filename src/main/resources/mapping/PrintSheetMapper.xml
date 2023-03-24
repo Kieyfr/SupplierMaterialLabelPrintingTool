@@ -317,5 +317,11 @@
     <update id="modPrintSheetPrint">
         update LPC_PRINTSHEET set PRINT = 0 where PK_ORDER_B=#{PK_ORDER_B}
     </update>
+    <delete id="delPrintSheet">
+        delete
+        from LPC_PRINTSHEET
+        where PK_ORDER_B = #{PK_ORDER_B}
+          AND SUPPLOTNUM = #{SUPPLOTNUM}
+    </delete>
 
 </mapper>

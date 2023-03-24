@@ -432,4 +432,19 @@ public class IndexController {
             return new ResponseData<String>("400", "修改失败", null);
         }
     }
+
+    /**
+     * 删除打印表
+     *
+     * @return SUPPCODE
+     */
+    @RequestMapping("delPrintSheet")
+    public ResponseData<String> delPrintSheet(@RequestParam("PK_ORDER_B") String PK_ORDER_B,@RequestParam("SUPPLOTNUM") String SUPPLOTNUM) {
+        int i = printSheetSerivce.delPrintSheet(PK_ORDER_B,SUPPLOTNUM);
+        if (i>0){
+            return new ResponseData<String >("200", "删除成功", null);
+        }else {
+            return new ResponseData<String>("400", "删除失败", null);
+        }
+    }
 }

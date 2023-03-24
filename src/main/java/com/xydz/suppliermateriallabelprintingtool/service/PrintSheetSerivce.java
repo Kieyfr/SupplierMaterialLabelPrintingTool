@@ -34,4 +34,7 @@ public interface PrintSheetSerivce  {
     //修改打印表为完成
     Integer modPrintSheetPrint(String PK_ORDER_B);
 
+    //删除打印表数据
+    int delPrintSheet(String PK_ORDER_B,String SUPPLOTNUM);
+
 }

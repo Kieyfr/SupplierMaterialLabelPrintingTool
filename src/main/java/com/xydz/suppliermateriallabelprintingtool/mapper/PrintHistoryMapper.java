@@ -26,4 +26,8 @@ public interface PrintHistoryMapper {
     //获取当前订单最大的批号
     String selMaxLOTNUM(@Param("PK_ORDER_B")String PK_ORDER_B,@Param("PRINTDATE")Date PRINTDATE);
 
+    //删除对应所有对应历史
+    Integer delAllPrintHistory(@Param("PK_ORDER_B")String PK_ORDER_B,@Param("SUPPLOTNUM") String SUPPLOTNUM);
+
+    Integer selectPrintHistoryNum(@Param("PK_ORDER_B")String PK_ORDER_B,@Param("SUPPLOTNUM") String SUPPLOTNUM);
 }
