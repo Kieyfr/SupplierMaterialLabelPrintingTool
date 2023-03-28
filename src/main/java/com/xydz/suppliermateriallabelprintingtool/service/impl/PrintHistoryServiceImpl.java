@@ -47,8 +47,12 @@ public class PrintHistoryServiceImpl implements PrintHistoryService {
     @Transactional
     @Override
     public List<ShowPrintHistory> selPrintHistory(String PK_ORDER_B,String SUPPLOTNUM) {
-        System.out.println("SUPPLOTNUM"+SUPPLOTNUM);
         return printHistoryMapper.selPrintHistory(PK_ORDER_B,SUPPLOTNUM);
+    }
+
+    @Override
+    public List<ShowPrintHistory> selPrintHistoryB(String PK_ORDER_B,String SUPPLOTNUM) {
+        return printHistoryMapper.selPrintHistoryB(PK_ORDER_B,SUPPLOTNUM);
     }
 
     @Override

@@ -39,5 +39,7 @@ public interface PrintSheetMapper {
     //修改打印表为完成
     Integer modPrintSheetPrint(@Param("PK_ORDER_B")String PK_ORDER_B);
 
+
+    //删除打印表
     int delPrintSheet(@Param("PK_ORDER_B")String PK_ORDER_B,@Param("SUPPLOTNUM")String SUPPLOTNUM);
 }

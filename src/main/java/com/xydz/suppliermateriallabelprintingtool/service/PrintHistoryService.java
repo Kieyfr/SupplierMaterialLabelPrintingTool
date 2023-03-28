@@ -22,6 +22,9 @@ public interface PrintHistoryService {
     //查询对应的打印历史
     List<ShowPrintHistory> selPrintHistory(String PK_ORDER_B,String SUPPLOTNUM);
 
+    //查询对应订单物料打印历史
+    List<ShowPrintHistory> selPrintHistoryB(String PK_ORDER_B,String SUPPLOTNUM);
+
 
     //获取最大的订单批号
     String selMaxLOTNUM(String PK_ORDER_B, Date PRINTDATE);

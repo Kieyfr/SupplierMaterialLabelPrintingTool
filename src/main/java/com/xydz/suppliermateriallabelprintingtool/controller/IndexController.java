@@ -339,6 +339,18 @@ public class IndexController {
 //        System.out.println(selPrintHistory.getSUPPLOTNUM());
         return new ResponseData<List<ShowPrintHistory>>("200", "获取成功", showPrintHistoryList);
     }
+    /**
+     * 查询对应的打印历史
+     *
+     * @param PK_ORDER_B
+     * @return status
+     */
+    @RequestMapping("selPrintHistoryB")
+    public ResponseData<List<ShowPrintHistory>> selPrintHistoryB(SelPrintHistory selPrintHistory) {
+        List<ShowPrintHistory> showPrintHistoryList = printHistoryService.selPrintHistoryB(selPrintHistory.getPK_ORDER_B(),selPrintHistory.getSUPPLOTNUM());
+//        System.out.println(selPrintHistory.getSUPPLOTNUM());
+        return new ResponseData<List<ShowPrintHistory>>("200", "获取成功", showPrintHistoryList);
+    }
 
     /**
      * 查询对应的打印历史数量
