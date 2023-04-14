@@ -337,6 +337,7 @@ public class IndexController {
     public ResponseData<List<ShowPrintHistory>> selPrintHistory(SelPrintHistory selPrintHistory) {
         List<ShowPrintHistory> showPrintHistoryList = printHistoryService.selPrintHistory(selPrintHistory.getPK_ORDER_B(), selPrintHistory.getSUPPLOTNUM());
 //        System.out.println(selPrintHistory.getSUPPLOTNUM());
+
         return new ResponseData<List<ShowPrintHistory>>("200", "获取成功", showPrintHistoryList);
     }
     /**
@@ -360,6 +361,7 @@ public class IndexController {
      */
     @RequestMapping("selPrintHistoryNum")
     public ResponseData<Print> selPrintHistoryNum(SelPrintHistory selPrintHistory) {
+
         Print print = printHistoryService.selPrintHistoryNum(selPrintHistory.getPK_ORDER_B(), selPrintHistory.getSUPPLOTNUM());
         return new ResponseData<Print>("200", "获取成功", print);
     }

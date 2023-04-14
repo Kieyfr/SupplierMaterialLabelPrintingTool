@@ -33,4 +33,6 @@ public class PrintHistory {
 
     private String PALLET;          //托盘码，将所有一起的批号记录下来,用，隔开
 
+    private Boolean HF;             //是否选了HF选了1未选0
+
 }

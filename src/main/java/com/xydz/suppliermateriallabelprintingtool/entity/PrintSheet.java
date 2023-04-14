@@ -47,6 +47,8 @@ public class PrintSheet {
 
     private Boolean PRINT;         //是否打印
 
+    private Boolean HF;             //是否选了HF选了1未选0
+
 
 
 }

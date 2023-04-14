@@ -22,6 +22,7 @@
         <result property="NUM" column="NUM" jdbcType="DOUBLE"></result>
         <result property="PRINT" column="PRINT" jdbcType="BOOLEAN"></result>
         <result property="DBILLDATE" column="DBILLDATE" jdbcType="VARCHAR"></result>
+        <result property="HF" column="HF" jdbcType="BOOLEAN"></result>
     </resultMap>
 
     <select id="selPrintSheetIfexist" resultMap="map">
@@ -37,7 +38,7 @@
         <if test="MATERMATERIALTYPE!=null">
             MATERMATERIALTYPE,
         </if>
-        PRODUCEDATE,NETWEIGHT,GROSSWEIGHT,NUM,PRINT,DBILLDATE)
+        PRODUCEDATE,NETWEIGHT,GROSSWEIGHT,NUM,PRINT,DBILLDATE,HF)
         values (#{PK_ORDER},#{PK_ORDER_B},#{SUPPCODE},#{SUPPNAME},#{SUPPSHORTNAME},#{SUPPMATERCODE},#{SUPPLOTNUM},#{VBILLCODE},#{MATERCODE},#{MATERNAME},
         <if test="MATERMATERIALSPEC!=null">
             #{MATERMATERIALSPEC},
@@ -45,7 +46,7 @@
         <if test="MATERMATERIALTYPE!=null">
             #{MATERMATERIALTYPE},
         </if>
-            #{PRODUCEDATE},#{NETWEIGHT},#{GROSSWEIGHT},#{NUM},#{PRINT},#{DBILLDATE})
+            #{PRODUCEDATE},#{NETWEIGHT},#{GROSSWEIGHT},#{NUM},#{PRINT},#{DBILLDATE},#{HF})
     </insert>
 
     <select id="selPrintSheets" resultMap="map">
@@ -78,7 +79,7 @@
             l.MATERCODE,l.MATERNAME,
             l.MATERMATERIALSPEC,l.MATERMATERIALTYPE,l.NUM,l.DBILLDATE,
             l.SUPPLOTNUM,l.SUPPCODE,l.SUPPNAME,
-            l.SUPPSHORTNAME,l.SUPPMATERCODE,l.NETWEIGHT,l.GROSSWEIGHT,l.PRODUCEDATE
+            l.SUPPSHORTNAME,l.SUPPMATERCODE,l.NETWEIGHT,l.GROSSWEIGHT,l.PRODUCEDATE,l.HF
         from  LPC_PRINTSHEET l
         <where>
             <if test="SUPPCODE!=null and SUPPCODE!=''">
@@ -185,7 +186,7 @@
         decode(c.DBILLDATE, null, l.DBILLDATE, c.DBILLDATE) DBILLDATE,decode(c.SUPPNAME, null, l.SUPPNAME, c.SUPPNAME) SUPPNAME,
         l.SUPPLOTNUM,decode(c.SUPPCODE, null, l.SUPPCODE, c.SUPPCODE) SUPPCODE,
         (select SHORTNAME from ncc.view_xinya_bd_supplier@DBLIK_PURCHASE d WHERE d.CODE=decode(c.SUPPCODE, null, l.SUPPCODE, c.SUPPCODE) and rownum=1) SUPPSHORTNAME,
-        l.SUPPMATERCODE,l.NETWEIGHT,l.GROSSWEIGHT,l.PRODUCEDATE
+        l.SUPPMATERCODE,l.NETWEIGHT,l.GROSSWEIGHT,l.PRODUCEDATE,l.HF
         from (select
         a.PK_ORDER PK_ORDER,b.PK_ORDER_B PK_ORDER_B,a.VBILLCODE VBILLCODE,b.MATERCODE MATERCODE,
         b.MATERNAME MATERNAME,b.MATERMATERIALSPEC MATERMATERIALSPEC,
